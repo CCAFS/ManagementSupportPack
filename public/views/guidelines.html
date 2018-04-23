@@ -14,21 +14,28 @@
       <table class="table  table-striped table-bordered">
         <thead>
           <tr>
+            <th colspan="2"></th>
+            {% for stage in stages %}
+              <th colspan="{{ roles|length }}" class="text-center">{{ stage.name }}</th>
+            {% endfor %}
+          </tr>
+          <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Type</th>
-            <th>Source</th>
+            {% for stage in stages %}
+              {% for role in roles %}<th>{{ role.name }}</th>{% endfor %}
+            {% endfor %}
           </tr>
         </thead>
         {% for guideline in guidelines %}
             <tr>
               <td>{{ guideline.id }}</td>
               <td>{{ guideline.code }} {{ guideline.name }}</td>
-              <td>{{ guideline.type }}</td>
-              <td>{{ guideline.source }}</td>
+              {% for stage in stages %}
+                {% for role in roles %}<td></td>{% endfor %}
+              {% endfor %}
             </tr>
         {% endfor %}
-
       </table>
     </div>
     <footer></footer>

@@ -18,7 +18,10 @@ function selectAnOption(){
   var optionText = $option.text();
   var type = $option.classParam('type');
   var $parent = $option.parent();
-  $parent.hide();
+
+  if($parent.parent().hasClass('dropdown')){
+      $parent.hide();
+  }
   // Set current option
   $option.addClass('current').siblings().removeClass('current');
   // Select an option

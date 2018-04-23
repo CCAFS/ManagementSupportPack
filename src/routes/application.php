@@ -5,7 +5,9 @@ use \Psr\Http\Message\ResponseInterface as Response;
 // Render Twig template in route
 $app->get('/', function ($request, $response, $args) {
 
-
+  $roles = array();
+  $stages = array();
+  $categories = array();
   try{
       // Get DB Object
       $db = new db();
@@ -38,19 +40,37 @@ $app->get('/', function ($request, $response, $args) {
 
 // Render Twig template in route
 $app->get('/guidelines', function ($request, $response, $args) {
+  $guidelines = array();
+  $roles = array();
+  $stages = array();
+  $categories = array();
   try{
       // Get DB Object
       $db = new db();
       // Connect
       $db = $db->connect();
+
       // Get Roles
+      $stmt = $db->query("SELECT * FROM mesp_roles");
+      $roles = $stmt->fetchAll(PDO::FETCH_OBJ);
+      // Get Stages
+      $stmt = $db->query("SELECT * FROM mesp_stages");
+      $stages = $stmt->fetchAll(PDO::FETCH_OBJ);
+      // Get Categories
+      $stmt = $db->query("SELECT * FROM mesp_categories");
+      $categories = $stmt->fetchAll(PDO::FETCH_OBJ);
+      // Get Guidelines
       $stmt = $db->query("SELECT * FROM mesp_guidelines ORDER BY code");
       $guidelines = $stmt->fetchAll(PDO::FETCH_OBJ);
+
       $db = null;
   } catch(PDOException $e){
       echo '{"error": {"text": '.$e->getMessage().'}';
   }
   return $this->view->render($response, 'guidelines.html', [
-    'guidelines' => $guidelines
+    'guidelines' => $guidelines,
+    'roles' => $roles,
+    'stages' => $stages,
+    'categories' => $categories
   ]);
 })->setName('guidelines');

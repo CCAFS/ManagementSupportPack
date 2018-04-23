@@ -16,8 +16,8 @@
   position: relative;
 }
 
-.selectionComponent p {
-  background: #EF9A9A url(../images/select-arrow.png) no-repeat;
+.selectionComponent.dropdown p {
+  background: url(../images/select-arrow.png) no-repeat;
   background-size: 25px;
   background-position: right;
   background-position-x: 95%;
@@ -29,21 +29,37 @@
   opacity: 0.9;
 }
 
-.selectionComponent p img {
+.selectionComponent.dropdown p img {
   width: 24px;
 }
 
-.selectionComponent p:hover {
-  background-color: #ea9090;
+.selectionComponent.dropdown p {
+  background-color: #e3d34f;
 }
 
-.selectionComponent p.selected {
-  background-color: #d47979;
+.selectionComponent.dropdown p:hover {
+  background-color: #e6da7b;
+}
+
+.selectionComponent.dropdown p.selected {
+  background-color: #e3d34f;
   color: #fff;
   opacity: 1;
 }
 
-.selectionComponent ul {
+.selectionComponent.dropdown.stagesBlock p {
+  background-color: #1281aa;
+}
+
+.selectionComponent.dropdown.stagesBlock p:hover {
+  background-color: #2b9ec8;
+}
+
+.selectionComponent.dropdown.stagesBlock p.selected {
+  background-color: #1281aa;
+}
+
+.selectionComponent.dropdown ul {
   display: none;
   position: absolute;
   margin: 0;
@@ -54,11 +70,11 @@
   box-shadow: 0px 1px 5px #ccc;
 }
 
-.selectionComponent:hover ul {
+.selectionComponent.dropdown:hover ul {
   display: block !important;
 }
 
-.selectionComponent ul li {
+.selectionComponent.dropdown ul li {
   background: #fff;
   list-style: none;
   color: #009688;
@@ -67,11 +83,11 @@
   cursor: pointer;
 }
 
-.selectionComponent ul li:hover {
+.selectionComponent.dropdown ul li:hover {
   background: #f2f2f2;
 }
 
-.selectionComponent ul li.current {
+.selectionComponent.dropdown ul li.current {
   background: #f1f1f1;
   font-weight: bold;
 }
@@ -103,8 +119,7 @@ span.optionText {
 }
 
 .results-query ul {
-  margin: 0;
-  padding: 0px 15px;
+  padding: 0;
   margin: 12px 0 50px 0;
 }
 
