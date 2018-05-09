@@ -1,7 +1,7 @@
-# MESupport
+# ManagementSupportPack
 Monitoring &amp; Evaluation Support Pack
 
-## Install MESupport
+## Install ManagementSupportPack
 
 #### Database
 Create an schema a run the SLQ files located in `/src/migrations` and set the database config in `src/config/db.php`
