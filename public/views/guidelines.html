@@ -10,7 +10,7 @@
   </head>
   <body>
     <header></header>
-    <div class="container">
+    <div class="container-fluid">
       <table class="table  table-striped table-bordered">
         <thead>
           <tr>
@@ -32,7 +32,15 @@
               <td>{{ guideline.id }}</td>
               <td>{{ guideline.code }} {{ guideline.name }}</td>
               {% for stage in stages %}
-                {% for role in roles %}<td></td>{% endfor %}
+                {% for role in roles %}
+                  <td>
+                    <select name="" id="">
+                      <option value="">Useful</option>
+                      <option value="">Important</option>
+                      <option value="">Very Important</option>
+                    </select>
+                  </td>
+                {% endfor %}
               {% endfor %}
             </tr>
         {% endfor %}
