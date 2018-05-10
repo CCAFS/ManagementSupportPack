@@ -15,13 +15,13 @@ $app->get('/', function ($request, $response, $args) {
       $db = $db->connect();
 
       // Get Roles
-      $stmt = $db->query("SELECT * FROM mesp_roles");
+      $stmt = $db->query("SELECT * FROM msp_roles");
       $roles = $stmt->fetchAll(PDO::FETCH_OBJ);
       // Get Stages
-      $stmt = $db->query("SELECT * FROM mesp_stages");
+      $stmt = $db->query("SELECT * FROM msp_stages");
       $stages = $stmt->fetchAll(PDO::FETCH_OBJ);
       // Get Categories
-      $stmt = $db->query("SELECT * FROM mesp_categories");
+      $stmt = $db->query("SELECT * FROM msp_categories");
       $categories = $stmt->fetchAll(PDO::FETCH_OBJ);
 
       $db = null;
@@ -51,16 +51,16 @@ $app->get('/guidelines', function ($request, $response, $args) {
       $db = $db->connect();
 
       // Get Roles
-      $stmt = $db->query("SELECT * FROM mesp_roles");
+      $stmt = $db->query("SELECT * FROM msp_roles");
       $roles = $stmt->fetchAll(PDO::FETCH_OBJ);
       // Get Stages
-      $stmt = $db->query("SELECT * FROM mesp_stages");
+      $stmt = $db->query("SELECT * FROM msp_stages");
       $stages = $stmt->fetchAll(PDO::FETCH_OBJ);
       // Get Categories
-      $stmt = $db->query("SELECT * FROM mesp_categories");
+      $stmt = $db->query("SELECT * FROM msp_categories");
       $categories = $stmt->fetchAll(PDO::FETCH_OBJ);
       // Get Guidelines
-      $stmt = $db->query("SELECT * FROM mesp_guidelines ORDER BY code");
+      $stmt = $db->query("SELECT * FROM msp_guidelines ORDER BY code");
       $guidelines = $stmt->fetchAll(PDO::FETCH_OBJ);
 
       $db = null;

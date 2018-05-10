@@ -23,11 +23,11 @@ $app->get('/api/guidelinesLevels/{role}/{stage}/{category}', function(Request $r
     $s= $request->getAttribute('stage');
     $c= $request->getAttribute('category');
     $sql = "SELECT g.id,g.code,g.name,g.type,g.source, il.importance_level
-            FROM mesp_importance_levels il
-            INNER JOIN mesp_categories c ON il.category_id = c.id
-            INNER JOIN mesp_stages s ON il.stage_id = s.id
-            INNER JOIN mesp_roles r ON il.role_id = r.id
-            INNER JOIN mesp_guidelines g ON il.guideline_id = g.id
+            FROM msp_importance_levels il
+            INNER JOIN msp_categories c ON il.category_id = c.id
+            INNER JOIN msp_stages s ON il.stage_id = s.id
+            INNER JOIN msp_roles r ON il.role_id = r.id
+            INNER JOIN msp_guidelines g ON il.guideline_id = g.id
             WHERE il.role_id = ".$r." and il.stage_id= ".$s." and il.category_id=".$c."
             ORDER BY g.code";
 

@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: me_support_db
+-- Host: 127.0.0.1    Database: msp_db
 -- ------------------------------------------------------
 -- Server version	5.5.5-10.1.13-MariaDB
 
@@ -35,7 +35,7 @@ CREATE TABLE `msp_categories` (
 
 LOCK TABLES `msp_categories` WRITE;
 /*!40000 ALTER TABLE `msp_categories` DISABLE KEYS */;
-INSERT INTO `msp_categories` VALUES (0,'Monitoring, Evaluation and Learning Basics'),(1,'Theory of Change and Impact Pathways - Planning'),(2,'Indicators'),(3,'Baselines'),(4,'Reflection Mechanisms'),(5,'Reporting'),(6,'Impact Assessment Studies and Evaluation'),(7,'Monitoring, Evaluation and Learning Tools'),(8,'Online Planning, Reporting and Management Information System'),(9,'Overall references for suitable tools and their descriptions');
+INSERT INTO `msp_categories` VALUES (0,'Protocols'),(1,'Policy Documents'),(2,'Data Ownership and Authorship'),(3,'Budgeting & Planning'),(4,'Data & Document Store'),(5,'Fieldwork'),(6,'Managing Data'),(7,'Metadata'),(8,' Archiving & Sharing');
 /*!40000 ALTER TABLE `msp_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,7 +308,7 @@ CREATE TABLE `msp_stages` (
 
 LOCK TABLES `msp_stages` WRITE;
 /*!40000 ALTER TABLE `msp_stages` DISABLE KEYS */;
-INSERT INTO `msp_stages` VALUES (1,'Decisions while designing'),(2,'Management of research processes'),(3,'Delivery of research products');
+INSERT INTO `msp_stages` VALUES (1,'Proposal Stage'),(2,'Grant Opening'),(3,'Project Research'),(4,'Publishing'),(5,'Grant Close out');
 /*!40000 ALTER TABLE `msp_stages` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -321,4 +321,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-10-13  8:58:32
+-- Dump completed on 2018-05-09 22:24:38
