@@ -2,6 +2,20 @@ $(document).ready(function() {
 
   //Attach Events
   attachEvents();
+
+  // Set countdown
+  $('.countdown-styled').countdown({
+      date: "May 24, 2018 15:03:26",
+      render: function(data) {
+        var el = $(this.el);
+        el.empty()
+          .append("<div>" + this.leadingZeros(data.days, 2) + " <span>days</span></div>")
+          .append("<div>" + this.leadingZeros(data.hours, 2) + " <span>hrs</span></div>")
+          .append("<div>" + this.leadingZeros(data.min, 2) + " <span>min</span></div>")
+          .append("<div>" + this.leadingZeros(data.sec, 2) + " <span>sec</span></div>");
+      }
+  });
+
 });
 
 /*********************************** Events ***********************************/
