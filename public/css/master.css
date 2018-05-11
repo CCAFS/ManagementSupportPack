@@ -331,6 +331,7 @@ li.type-stage .index {
 li.type-stage .description {
   font-weight: lighter;
   font-style: italic;
+  font-size: 0.9em;
 }
 
 li.type-category {
@@ -391,9 +392,9 @@ li.type-category .index {
 
 .overlayBox{
   background-color: rgba(255,255,255, 0.6);
-  position: absolute;
+  /* position: absolute; */
   z-index: 1;
-  height: 695px;
+  /* height: 695px; */
   width: 100%;
 }
 
