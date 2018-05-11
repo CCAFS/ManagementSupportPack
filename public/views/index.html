@@ -12,25 +12,29 @@
   <body>
     <header></header>
 
-    <!-- Application Countdown-->
+    <!-- Application Countdown -->
     <div class="text-center overlayBox">
       <div class="countdownBox">
         <h3>The Management Support Pack will be available in </h3><div class="countdown-styled"></div>
       </div>
     </div>
+    <br><br><br><br><br><br>
+
 
     <div class="container">
       <div class="loading" style="display:none"></div>
 
       <div class="form-group row">
         <div class="col-xs-9 row">
-          <div class="form-group row">
+          <!-- Search Wizard -->
+          <div class="searchBlock form-group row">
             <div class="col-xs-4">
-              <h2 class="title">Who are you?</h2>
-              <div class="selectionComponent">
+              <h2 class="headTitle">Who are you?</h2>
+              <div class="componentsBlock">
+                <p class="optionText role"></p>
                 <ul class="grayBox">
                   {% for role in roles %}
-                    <li class="type-role id-{{ role.id }} text-center" >
+                    <li class="type-role id-{{ role.id }} selectionComponent text-center" >
                       <img class="image" src="./images/roles/role-{{ role.id }}.png" alt="{{ role.name }}" width="100%" >
                       <div class="name">{{ role.name }}</div>
                     </li>
@@ -39,11 +43,12 @@
               </div>
             </div>
             <div class="col-xs-8 row">
-              <h2 class="title">Where are you?</h2>
-              <div class="selectionComponent">
+              <h2 class="headTitle">Where are you?</h2>
+              <div class="componentsBlock">
+                <p class="optionText stage"></p>
                 <ul class="grayBox">
                   {% for stage in stages %}
-                    <li class="type-stage id-{{ stage.id }}">
+                    <li class="type-stage id-{{ stage.id }} selectionComponent">
                       <span class="index">{{ stage.id }}</span>
                       <span class="name">{{ stage.name }}</span> <br>
                       <span class="description"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. corporis?</span>
@@ -53,13 +58,23 @@
               </div>
             </div>
           </div>
+          <!-- Search Results -->
+          <div class="resultsBlock form-group row" style="display:none">
+            <div class="col-xs-12">
+              <h2 class="headTitle">Guidelines Recommened</h2>
+              <div class="results-query col-xs-12">
+                <ul></ul>
+              </div>
+            </div>
+          </div>
+
         </div>
         <div class="col-xs-3 row">
-          <h2 class="title">What</h2>
-          <div class="selectionComponent">
+          <h2 class="headTitle">What</h2>
+          <div class="componentsBlock">
             <ul class="grayBox">
               {% for category in categories %}
-                <li class="type-category id-{{ category.id }}">
+                <li class="type-category id-{{ category.id }} selectionComponent">
                   <span class="index">{{ category.id }}</span>
                   <span class="name">{{ category.name }}</span>
                 </li>

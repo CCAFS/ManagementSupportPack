@@ -22,57 +22,66 @@ $(document).ready(function() {
 
 function attachEvents(){
   // Select an option Event
-  $('.selectionComponent ul li').on('click', selectAnOption );
+  $('li.selectionComponent:not(current)').on('click', selectAnOption );
 }
 
 /********************************** Functions *********************************/
 
 function selectAnOption(){
   var $option = $(this);
-  var optionText = $option.text();
+  var optionText = $option.find('.name').text();
   var type = $option.classParam('type');
   var $parent = $option.parent();
 
-  if($parent.parent().hasClass('dropdown')){
-      $parent.hide();
-  }
+
+  console.log("type", type);
+
+  //  if($parent.parent().hasClass('dropdown')){
+    //  $parent.hide();
+  //}
+
   // Set current option
-  $option.addClass('current').siblings().removeClass('current');
+  $option.addClass('current').siblings().removeClass('current ');
+  $option.removeClass('notSelected').siblings().addClass('notSelected');
   // Select an option
   $parent.parent().find('.optionText').html(cutText(optionText, 28)).parent().addClass('selected');
   // Animate icon
-  $parent.parent().find('img').animateCss('flipInX');
+  $option.animateCss('flipInX');
 
-  var nOptions = $('.selectionComponent li.current').length;
+  // Count Options
+  var nOptions = $('li.selectionComponent.current').length;
 
-  $('.check-'+type).addClass('checked');
-  $('.nOptions').text(3 - nOptions);
+
+  //$('.check-'+type).addClass('checked');
+  //$('.nOptions').text(3 - nOptions);
 
   // Check that the 3 select options are selected
   if(nOptions == 3){
-    showResultsBlock('query');
+    //showResultsBlock('query');
+    $('.searchBlock .componentsBlock').addClass('dropdown');
+    $('.resultsBlock').slideDown();
     var options = {
-      'r': $('.rolesBlock li.current').classParam('id'),
-      's': $('.stagesBlock li.current').classParam('id'),
-      'c': $('.categoriesBlock li.current').classParam('id')
+      'r': $('li.type-role.current').classParam('id'),
+      's': $('li.type-stage.current').classParam('id'),
+      'c': $('li.type-category.current').classParam('id')
     }
     // Find recomended
     $.ajax({
        url: './api/guidelinesLevels/'+options.r+'/'+options.s+'/'+options.c,
        beforeSend: function(){
          $('.loading').fadeIn();
-         // Clean data
+         // Clear data
          $('.results-query ul').empty();
        },
        success: function(data) {
          var guidelines = jQuery.parseJSON( data);
          // Update result message
          $('.results-query .nDocuments').text(guidelines.length);
-         $('.results-query .roleText').text($('.rolesBlock li.current').text());
-         $('.results-query .stageText').text($('.stagesBlock li.current').text());
+         $('.results-query .roleText').text($('li.type-role.current .name').text());
+         $('.results-query .stageText').text($('li.type-stage.current .name').text());
 
          // Add category header
-         $('.results-query ul').append('<li class="guidelineHead">'+$('.categoriesBlock li.current').text()+'</li>');
+         $('.results-query ul').append('<li class="guidelineHead">'+$('li.type-category.current .name').text()+'</li>');
 
          //Add guidelines
          $.each(guidelines, function(i, guideline){
