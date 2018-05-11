@@ -33,13 +33,6 @@ function selectAnOption(){
   var type = $option.classParam('type');
   var $parent = $option.parent();
 
-
-  console.log("type", type);
-
-  //  if($parent.parent().hasClass('dropdown')){
-    //  $parent.hide();
-  //}
-
   // Set current option
   $option.addClass('current').siblings().removeClass('current ');
   $option.removeClass('notSelected').siblings().addClass('notSelected');
@@ -51,13 +44,8 @@ function selectAnOption(){
   // Count Options
   var nOptions = $('li.selectionComponent.current').length;
 
-
-  //$('.check-'+type).addClass('checked');
-  //$('.nOptions').text(3 - nOptions);
-
   // Check that the 3 select options are selected
   if(nOptions == 3){
-    //showResultsBlock('query');
     $('.searchBlock .componentsBlock').addClass('dropdown');
     $('.resultsBlock').slideDown();
     var options = {

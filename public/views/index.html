@@ -30,9 +30,9 @@
           <div class="searchBlock form-group row">
             <div class="col-xs-4">
               <h2 class="headTitle">Who are you?</h2>
-              <div class="componentsBlock">
-                <p class="optionText role"></p>
-                <ul class="grayBox">
+              <div class="componentsBlock grayBox">
+                <p class="role"><img src="./images/icon-1.png" alt=""><span class="optionText">Choose a Role...</span></p>
+                <ul class="">
                   {% for role in roles %}
                     <li class="type-role id-{{ role.id }} selectionComponent text-center" >
                       <img class="image" src="./images/roles/role-{{ role.id }}.png" alt="{{ role.name }}" width="100%" >
@@ -44,9 +44,9 @@
             </div>
             <div class="col-xs-8 row">
               <h2 class="headTitle">Where are you?</h2>
-              <div class="componentsBlock">
-                <p class="optionText stage"></p>
-                <ul class="grayBox">
+              <div class="componentsBlock grayBox">
+                <p class="stage"><img src="./images/icon-2.png" alt=""><span class="optionText"></span></p>
+                <ul class="">
                   {% for stage in stages %}
                     <li class="type-stage id-{{ stage.id }} selectionComponent">
                       <span class="index">{{ stage.id }}</span>

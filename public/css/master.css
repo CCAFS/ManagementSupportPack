@@ -16,7 +16,12 @@
   position: relative;
 }
 
+.componentsBlock p{
+  display:none;
+}
+
 .componentsBlock.dropdown p {
+  display:block;
   background: url(../images/select-arrow.png) no-repeat;
   background-size: 25px;
   background-position: right;
@@ -259,11 +264,12 @@ span.optionText {
 .grayBox {
   background-color: #f1f1f1;
   /* height: 100%; */
+  padding: 1em;
 }
 
 ul {
   margin: 0;
-  padding: 1.5em 1em;
+  padding: 0;
 }
 
 ul li {
@@ -285,11 +291,13 @@ ul li {
 }
 
 li.type-role {
-  padding: 0 1.2em;
+  padding: 0 0.7em;
 }
 
 li.type-role:hover {
-  padding: 0 0.8em;
+  /* padding: 0 0.8em; */
+  background-color: rgba(255,255,255, 0.3);
+  box-shadow: 0px 0px 4px rgba(0,0,0, 0.1);
   font-weight: bold !important;
 }
 
