@@ -5,7 +5,7 @@ $(document).ready(function() {
 
   // Set countdown
   $('.countdown-styled').countdown({
-      date: "May 24, 2018 15:03:26",
+      date: "May 25, 2018 15:03:26",
       render: function(data) {
         var el = $(this.el);
         el.empty()
