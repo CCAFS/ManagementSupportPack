@@ -82,6 +82,7 @@ function selectAnOption(){
            $guideline.find('.level').addClass(guideline.importance_level);
            // Update inputs:checkboxes
            $guideline.find('input:checkbox').attr('id', 'input-'+i);
+
            $guideline.find('label').attr('for', 'input-'+i);
            // Add the guideline to the list
            $('.results-query ul').append($guideline);

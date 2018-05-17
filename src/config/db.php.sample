@@ -1,10 +1,10 @@
 <?php
     class db{
         // Properties
-        private $dbhost = '';
-        private $dbuser = '';
+        private $dbhost = 'localhost';
+        private $dbuser = 'root';
         private $dbpass = '';
-        private $dbname = '';
+        private $dbname = 'msp_db';
 
         // Connect
         public function connect(){
