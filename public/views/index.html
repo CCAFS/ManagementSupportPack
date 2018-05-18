@@ -1,106 +1,198 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Monitoring & Evaluation Support Pack</title>
-    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./bower_components/animate.css/animate.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
-    <link rel="stylesheet" href="./css/master.css">
-  </head>
-  <body>
-    <header></header>
+<head>
+  <meta charset="utf-8">
+  <title>Monitoring & Evaluation Support Pack</title>
+  <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./bower_components/animate.css/animate.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+  <link rel="stylesheet" href="./css/master.css">
+</head>
+<body>
+  <header></header>
 
-    <!-- Application Countdown -->
-    <div class="text-center overlayBox">
-      <div class="countdownBox">
-        <h3>The Management Support Pack will be available soon </h3>
-        <p><small>Please be aware that this is a demo version, particular features may end up looking different, or may not make it into the final release</small></p>
-        <div class="countdown-styled"></div>
-      </div>
+  <!-- Application Countdown -->
+  <div class="text-center overlayBox">
+    <div class="countdownBox">
+      <h3>The Management Support Pack will be available soon </h3>
+      <p><small>Please be aware that this is a demo version, particular features may end up looking different, or may not make it into the final release</small></p>
+      <div class="countdown-styled"></div>
     </div>
+  </div>
 
 
-    <div class="container">
-      <div class="loading" style="display:none"></div>
+  <div class="container">
+    <div class="loading" style="display:none"></div>
 
-      <div class="form-group row">
-        <div class="col-xs-9 row">
-          <!-- Search Wizard -->
-          <div class="searchBlock form-group row">
-            <div class="col-xs-4">
-              <h2 class="headTitle">Who are you?</h2>
-              <div class="componentsBlock grayBox">
-                <p class="role"><img src="./images/icon-1.png" alt=""><span class="optionText">Choose a Role...</span></p>
-                <ul class="">
-                  {% for role in roles %}
-                    <li class="type-role id-{{ role.id }} selectionComponent text-center" >
-                      <img class="image" src="./images/roles/role-{{ role.id }}.png" alt="{{ role.name }}" width="100%" >
-                      <div class="name">{{ role.name }}</div>
-                    </li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-            <div class="col-xs-8 row">
-              <h2 class="headTitle">Where are you?</h2>
-              <div class="componentsBlock grayBox">
-                <p class="stage"><img src="./images/icon-2.png" alt=""><span class="optionText"></span></p>
-                <ul class="">
-                  {% for stage in stages %}
-                    <li class="type-stage id-{{ stage.id }} selectionComponent">
-                      <span class="index">{{ stage.id }}</span>
-                      <span class="name">{{ stage.name }}</span> <br>
-                      <span class="description"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. corporis?</span>
-                    </li>
-                  {% endfor %}
-                </ul>
-              </div>
-            </div>
-          </div>
-          <!-- Search Results -->
-          <div class="resultsBlock form-group row" style="display:none">
-            <div class="col-xs-12">
-              <h2 class="headTitle">Guidelines Recommened</h2>
-              <div class="results-query col-xs-12">
-                <ul></ul>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="col-xs-3 row">
-          <h2 class="headTitle">What</h2>
-          <div class="componentsBlock">
-            <ul class="grayBox">
-              {% for category in categories %}
-                <li class="type-category id-{{ category.id }} selectionComponent">
-                  <span class="index">{{ category.id }}</span>
-                  <span class="name">{{ category.name }}</span>
+    <div class="form-group row">
+      <div class="col-xs-9 row">
+        <!-- Search Wizard -->
+        <div class="searchBlock form-group row">
+          <div class="col-xs-4">
+            <h2 class="headTitle">Who are you?</h2>
+            <div class="componentsBlock grayBox">
+              <p class="role"><img src="./images/icon-1.png" alt=""><span class="optionText">Choose a Role...</span></p>
+              <ul class="">
+                {% for role in roles %}
+                <li class="type-role id-{{ role.id }} selectionComponent text-center" >
+                  <img class="image" src="./images/roles/role-{{ role.id }}.png" alt="{{ role.name }}" width="100%" >
+                  <div class="name">{{ role.name }}</div>
                 </li>
-              {% endfor %}
-            </ul>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          <div class="col-xs-8 row">
+            <h2 class="headTitle">Where are you?</h2>
+            <div class="componentsBlock grayBox">
+              <p class="stage"><img src="./images/icon-2.png" alt=""><span class="optionText"></span></p>
+              <ul class="">
+                {% for stage in stages %}
+                <li class="type-stage id-{{ stage.id }} selectionComponent">
+                  <span class="index">{{ stage.id }}</span>
+                  <span class="name">{{ stage.name }}</span> <br>
+                  <span class="description"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. corporis?</span>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
 
+        <!-- Search Results -->
+        <div class="resultsBlock form-group row" style="display:none">          
+         <div class="col-xs-12">
+          <h2 class="headTitle">Guidelines Recommened</h2>
+          <div class="results-query col-xs-12">
+            <ul></ul>
+          </div>
+          <span class="error" style="display: none;">Please check a file.</span>
+          <div style="margin-top: 2px;height: 39px;"> 
+            <a id="filtered-type" class="download 1 btn btn-primary">Download chosen documents</a>
+            <a class="download 5 btn btn-primary">Download full package</a>
+          </div>                
+        </div>
+
+        <!--terms and conditions -->
+        <div id="step3" class="componentsBlock grayBox" style="display: none">
+          <h2>Terms and conditions</h2>
+          <div id="step3-form" >
+            <p>To continue downloading your files, please first fill in your email and then some basic information. This information will be used by CCAFS solely for impact assessment and CGIAR and Center level reporting purposes. Filling it in will greatly help us to track the use of the portal and keep improving it. This portal provides data to a very large community of users and improving its usability and efficiency is a key aspect we work on continuously. However, you may click on <a id="skip-form" href="#">skip</a> to download links directly. </p>
+            Email: <input type="text" id="mail" name="mail" value=""/> <br>
+            <span class="error" style="display: none;">Please enter a valid email address.</span>
+            <br><a href="" class="download 4 btn btn-primary">Go Back</a> <a class="download 2 btn btn-primary">Next</a>
+          </div>
+        </div>
+        <!--end terms and conditions -->
+
+        <!--terms and conditions step next-->
+        <div id="step4" style="display: none">
+          <h2>Terms and conditions</h2>
+          <div id="step4-form" >
+            <div id="side-form1">
+              <div class="left"><label for='first_name'>First name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label> <input type="text" id="first_name" name="first_name" value=""/> </div>
+              <div class="right"><label for='last_name'>Last name:</label> <input type="text" id="last_name" name="last_name" value=""/> </div>
+              <div class="left" style="clear: both;"><label for='institute-name'>Institute name:</label> <input type="text" id="institute-name" name="institute-name" value=""/> </div>
+              
+            </div>
+            <div id="side-form2">
+              <div class="left">
+                <h4>Region(s) of your research interest: </h4> 
+
+                <input name='research-regions' class='css-checkbox-regions' id='l1' value="africa" type='checkbox'>
+                <label for='l1' class='css-label-regions'>Africa</label><br>
+                <input name='research-regions' class='css-checkbox-regions' id='l2' value="asia" type='checkbox'>
+                <label for='l2' class='css-label-regions'>Asia</label><br>
+                <input name='research-regions' class='css-checkbox-regions' id='l3' value="oceania" type='checkbox'>
+                <label for='l3' class='css-label-regions'>Australia and Oceania</label><br>
+                <input name='research-regions' class='css-checkbox-regions' id='l4' value="central_america_caribbean" type='checkbox'>
+                <label for='l4' class='css-label-regions'>Central America and the Caribbean</label><br>
+                <input name='research-regions' class='css-checkbox-regions' id='l5' value="middle_east_north_africa" type='checkbox'>
+                <label for='l5' class='css-label-regions'>Middle East and North Africa</label><br>
+                <input name='research-regions' class='css-checkbox-regions' id='l6' value="north_america" type='checkbox'>
+                <label for='l6' class='css-label-regions'>North America</label><br>
+                <input name='research-regions' class='css-checkbox-regions' id='l7' value="south_america"  type='checkbox'>
+                <label for='l7' class='css-label-regions'>South America</label><br>
+                <input name='research-regions' class='css-checkbox-regions' id='l8' value="europe"  type='checkbox'>
+                <label for='l8' class='css-label-regions'>Europe</label><br>  
+              </div>
+              <div class="right">
+                <h4>Region(s) where your institute is located: </h4> 
+
+                <input name='institute-regions' class='css-checkbox-regions' id='i1' value="africa" type='checkbox'>
+                <label for='i1' class='css-label-regions'>Africa</label><br>
+                <input name='institute-regions' class='css-checkbox-regions' id='i2' value="asia" type='checkbox'>
+                <label for='i2' class='css-label-regions'>Asia</label><br>
+                <input name='institute-regions' class='css-checkbox-regions' id='i3' value="oceania" type='checkbox'>
+                <label for='i3' class='css-label-regions'>Australia and Oceania</label><br>
+                <input name='institute-regions' class='css-checkbox-regions' id='i4' value="central_america_caribbean" type='checkbox'>
+                <label for='i4' class='css-label-regions'>Central America and the Caribbean</label><br>
+                <input name='institute-regions' class='css-checkbox-regions' id='i5' value="middle_east_north_africa" type='checkbox'>
+                <label for='i5' class='css-label-regions'>Middle East and North Africa</label><br>
+                <input name='institute-regions' class='css-checkbox-regions' id='i6' value="north_america" type='checkbox'>
+                <label for='i6' class='css-label-regions'>North America</label><br>
+                <input name='institute-regions' class='css-checkbox-regions' id='i7' value="south_america" type='checkbox'>
+                <label for='i7' class='css-label-regions'>South America</label><br>
+                <input name='institute-regions' class='css-checkbox-regions' id='i8' value="europe" type='checkbox'>
+                <label for='i8' class='css-label-regions'>Europe</label><br>    
+              </div>  
+            </div>
+            <div id="side-form3">
+              Intended use of data: <br>
+              <textarea id="use" name="use" cols="70" rows="3"></textarea>
+              <input type="hidden" id="user-id" name="userId" value="">
+            </div> 
+            <span class="error" style="display: none;"></span>
+            <br><a class="download 3 btn btn-primary">Next</a>
+          </div>
+        </div>
+        <!--end terms and conditions step next-->
+
+        <!--download step-->
+        <div id="step5" style="display: none">
+          <h2>Download</h2>
+          <div id="result"></div>
+          <div id="guidelines"></div> 
+          <br><a href="" class="download 4">See more documents</a>
+        </div> 
+        <!--end download step-->
+
+
+      </div> 
     </div>
 
-    <footer></footer>
 
-    <!-- Guideline template -->
-    <ul style="display:none">
-      <li id="guideline-template" class="guideline inputsFlat">
-        <input class="" type="checkbox" name="" id="">
-        <label class="checkbox-label" for=""><span class="title"></span></label>
-        <span class="level pull-right"></span>
-      </li>
-    </ul>
+    <div class="col-xs-3 row">
+      <h2 class="headTitle">What</h2>
+      <div class="componentsBlock">
+        <ul class="grayBox">
+          {% for category in categories %}
+          <li class="type-category id-{{ category.id }} selectionComponent">
+            <span class="index">{{ category.id }}</span>
+            <span class="name">{{ category.name }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>      
+</div>
 
-    <script src="./bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
-    <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
-    <script src="./bower_components/countdown/dest/jquery.countdown.min.js" charset="utf-8"></script>
-    <script src="./js/main.js" charset="utf-8"></script>
-  </body>
+<footer></footer>
+
+<!-- Guideline template -->
+<ul style="display:none">
+  <li id="guideline-template" class="guideline inputsFlat">
+    <input class="" type="checkbox" name="check-guidelines" id="">
+    <label class="checkbox-label" for=""><span class="title"></span></label>
+    <span class="level pull-right"></span>
+  </li>
+</ul>
+
+<script src="./bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
+<script src="./bower_components/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
+<script src="./bower_components/countdown/dest/jquery.countdown.min.js" charset="utf-8"></script>
+<script src="./js/main.js" charset="utf-8"></script>
+</body>
 </html>
