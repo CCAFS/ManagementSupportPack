@@ -1,6 +1,6 @@
 var filterType,  listSelected,
 themePath = './vendor/',
-guideSelected;
+guideSelected = new Array();;
 
 $(document).ready(function() {
 
@@ -27,13 +27,27 @@ $(document).ready(function() {
 
 
   /**********************Click Events********************************************/
-    // Step 3 (Terms and conditions) email contact
+    // selected guideline
+
+    $("input:checkbox").click(function() {
+      if($(this).attr("name") == "check-guidelines" ) {
+        if($(this).prop('checked')){
+
+          addGuideSelected($(this).attr("data-idbd"));   
+        } else{
+          removeGuideSelected($(this).attr("data-idbd")); 
+        }
+
+      }
+    });
+
     $( "a.download.1" ).click(function() {
+
       filterType = $(this).attr("id"); 
-      console.log(filterType); 
+      
       $("[name='check-guidelines']:checked")
 
-      updateGuideSelected("check-guidelines");   
+
       $("#step3").show().siblings().hide();
     });
 
@@ -124,6 +138,7 @@ function selectAnOption(){
        },
        success: function(data) {
          var guidelines = jQuery.parseJSON( data);
+
          // Update result message
          $('.results-query .nDocuments').text(guidelines.length);
          $('.results-query .roleText').text($('li.type-role.current .name').text());
@@ -139,13 +154,13 @@ function selectAnOption(){
 
            // Add guideline title
            $guideline.find('.title').text(guideline.code+' '+guideline.name);
-
            // Add importance level and the style
            $guideline.find('.level').text(guideline.importance_level);
            $guideline.find('.level').addClass(guideline.importance_level);
            // Update inputs:checkboxes
            $guideline.find('input:checkbox').attr('id', 'input-'+i);
-
+           $guideline.find('input:checkbox').attr('data-idbd', JSON.stringify(guideline));
+           $guideline.find('input:checkbox').attr('data-idbd.source', JSON.stringify(guideline.source));
            $guideline.find('label').attr('for', 'input-'+i);
            // Add the guideline to the list
            $('.results-query ul').append($guideline);
@@ -165,75 +180,103 @@ function showResultsBlock(blockName){
   $('.resultsBlock .results-'+blockName).slideDown().siblings().slideUp();
 }
 
+    // skip-form (Links for download)
+    $("#skip-form").on("click", function(event) {
+      event.preventDefault();
+
+      $("#step5").show().siblings().hide();
+      printGuidelinesToDownload();
+      loaderStop();
+
+    });
 
 
-function printGuidelinesToDownload(){
-  var content = '<ul>';
-  
-  downloadText = ' Download',
-  className = '',
+
+    function printGuidelinesToDownload(){
+      var content = '<ul>';
+
+      downloadText = ' Download',
+      className = '',
 
 
-  downloadLink = themePath+'download.php?file=';
+      downloadLink = themePath+'download.php?file=';
 
-  content += "<li>";
-  content += "    <a class='downloadLink "+className+"' href='"+downloadLink+"' >";
-  content += "    <span class='download' style='float:right'><img src='"+themePath+"images/dl.png'>"+downloadText+"</span></a>";
-  content += "</li>";
-  
-  content += '</ul>';
-  $( "#step5 #guidelines" ).html(content);
+      content += "<li>";
+      content += "    <a class='downloadLink "+className+"' href='"+downloadLink+"' >";
+      content += "    <span class='download' style='float:right'><img src='"+themePath+"images/dl.png'>"+downloadText+"</span></a>";
+      content += "</li>";
 
-}
+      content += '</ul>';
+      $( "#step5 #guidelines" ).html(content);
+
+    }
 
     /* This event is when the Checkbox was Selected or Unselected
     and fill a array guideSelected with new list selected      */
-    function updateGuideSelected(name){
-      $("input[name^='"+name+"']").change(function() {
+    function addGuideSelected(guide){
+
+     guideSelected.push (JSON.parse(guide));
+     console.log(guideSelected.length);
+
+
+     /* $("input[name^='"+name+"']").change(function() {
         guideSelected = new Array();
         $("input[name^='"+name+"']:checked").each(function(i) {
           guideSelected[i] = dataLoaded[$(this).attr('id')];
         });
                 console.log(guideSelected);
       });
+      */
     }
 
+    function removeGuideSelected(guide){
+     console.log(guideSelected.length);
 
-
-    /*********************************** Utils ************************************/
-
-
-
-    function getClassParameter(selector,cssName) {
-      var check = cssName + "-";
-      var className = $(selector).attr('class') || '';
-      var type = $.map(className.split(' '), function(val,i) {
-        if(val.indexOf(check) > -1) {
-          return val.slice(check.length, val.length);
-        }
-      });
-      return((type.join(' ')) || 'none');
-    }
-
-    function cutText(str, l){
-      if (str.length > l){
-        str = str.slice(0,l) + '...';
+     for (var i = guideSelected.length; i>0 ; i--) {       
+       if(guideSelected[i]==JSON.parse(guide)){
+        delete guideSelected[i];
       }
-      return str;
     }
 
-    jQuery.fn.classParam = function(cssName) {
-      return getClassParameter(this, cssName)
-    };
+  }
 
-    $.fn.extend({
-      animateCss: function (animationName) {
-        var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-        this.addClass('animated ' + animationName).one(animationEnd, function() {
-          $(this).removeClass('animated ' + animationName);
-        });
-        return this;
+
+
+
+  /*********************************** Utils ************************************/
+
+
+
+  function getClassParameter(selector,cssName) {
+    var check = cssName + "-";
+    var className = $(selector).attr('class') || '';
+    var type = $.map(className.split(' '), function(val,i) {
+      if(val.indexOf(check) > -1) {
+        return val.slice(check.length, val.length);
       }
     });
+    return((type.join(' ')) || 'none');
+  }
+
+  function cutText(str, l){
+    if (str.length > l){
+      str = str.slice(0,l) + '...';
+    }
+    return str;
+  }
+
+  jQuery.fn.classParam = function(cssName) {
+    return getClassParameter(this, cssName)
+  };
+
+  $.fn.extend({
+    animateCss: function (animationName) {
+      var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+      this.addClass('animated ' + animationName).one(animationEnd, function() {
+        $(this).removeClass('animated ' + animationName);
+      });
+      return this;
+    }
+  });
 
 
