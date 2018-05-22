@@ -22,7 +22,7 @@ $(document).ready(function() {
   attachEvents();
 
   //Click Events
-  ValidateFields();
+  //ValidateFields();
 
   // Set countdown
   $('.countdown-styled').countdown({
@@ -82,11 +82,15 @@ $(document).ready(function() {
 
     // Step 5 (Links for download)
     $( "a.download.3" ).click(function() {
-
-      $("#step5").show().siblings().hide();
-     printGuidelinesToDownload();
-      $('.loading').fadeOut();    
-
+      var verifiedText = verifyFields();
+      if (verifiedText.length) {
+        $("#step4-form .error").html('Please fill out the information in the following fields :<br>'+verifiedText);
+        $("#step4-form .error").css("display", "block");
+      }else {
+        $("#step5").show().siblings().hide();
+        printGuidelinesToDownload();
+        $('.loading').fadeOut();    
+      }
     });
     
     $( "a.download.5" ).click(function() {
@@ -96,21 +100,7 @@ $(document).ready(function() {
     });
 
 
-/*
-      guideSelected = new Array();
-      guideSelected[0] = {
-        id: 999,
-        name: "Data Management Support [Full package]",
-        type: 3,
-        source: "http://www.reading.ac.uk/ssc/resources/ccafs_data_management_support_pack.pdf",
-        importance_level: "Optional"
-      }
-      $("#step3").show().siblings().hide();
-  
-
-      */
-
-    });
+  });
 
 /*********************************** Events ***********************************/
 
@@ -122,26 +112,108 @@ function attachEvents(){
 
 /*****************************************************************************/
 
-function ValidateFields(){
+function verifyFields(){
+  var verified = '';
+        // Validate first name.
+        if($("#first_name").is(":visible") && $("#first_name").val() == "") {
+          verified += '* First name <br>';
+          $("#first_name").css("background-color", "#FF9999");
+        } else {
+          $("#first_name").css("background-color", "");
+        }
+        // Validate last name.
+        if($("#last_name").is(":visible") && $("#last_name").val() == "") {
+          verified += '* Last name <br>';
+          $("#last_name").css("background-color", "#FF9999");
+        } else {
+          $("#last_name").css("background-color", "");
+        }
+        // Validate institute name.
+        if($("#institute-name").val() == "") {
+          verified += '* Institute name <br>';
+          $("#institute-name").css("background-color", "#FF9999");
+        } else {
+          $("#institute-name").css("background-color", "");
+        }
+        // Validate institute locations.
+        if($("input[name^='institute-regions']:checked").length == 0) {
+          verified += '* Region(s) where your institute is located <br>';
+          $(".institute-regions .group-label").css("color", "red");
+        } else {
+          $(".institute-regions .group-label").css("color", "");
+        }
+        // Validate research locations.
+        if($("input[name^='research-regions']:checked").length == 0) {
+          verified += '* Region(s) of your research interes <br>';
+          $(".research-regions .group-label").css("color", "red");
+        } else {
+          $(".research-regions .group-label").css("color", "");
+        }
+        // Validate intended use.
+        if($("#use").val() == "") {
+          verified += '* Intended use of data <br>';
+          $("#use").css("background-color", "#FF9999");
+        } else {
+          $("#use").css("background-color", "");
+        }
+        return verified;
 
-}
+      }
 
-function validateEmail(emailField) {
-  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-  if(emailField == "" || !emailReg.test(emailField)) {
-    return false;
-  } else {
-    return true;
-  }
-}
+      function validateEmail(emailField) {
+        var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+        if(emailField == "" || !emailReg.test(emailField)) {
+          return false;
+        } else {
+          return true;
+        }
+      }
 
-/********************************** Functions *********************************/
+      /********************************** Functions *********************************/
 
-function selectAnOption(){
-  var $option = $(this);
-  var optionText = $option.find('.name').text();
-  var type = $option.classParam('type');
-  var $parent = $option.parent();
+      function loadUser(email) {
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: themePath+"person.php",
+          data: {
+            context: "person",
+            email: email
+          },
+          beforeSend: function(){
+            $("#user-id").val("-1");
+
+          },
+          success: function(data) {
+
+            data=data[0];
+            if(data.email == null) {
+            } else {
+             $("#user-id").val(data.id);
+             $("#first_name").attr("disabled", "disabled");
+             $("#first_name").val(data.first_name);
+             $("#last_name").attr("disabled", "disabled");
+             $("#last_name").val(data.last_name);
+             $("#registered").attr("disabled", "disabled");
+             $("#registered").val(data.last_name);
+             $("#email").attr("disabled", "disabled");
+             $("#email").val(data.email);
+
+           }
+
+         },
+         'complete': function(data) {
+          loaderStop();
+        }
+      });
+      }
+
+
+      function selectAnOption(){
+        var $option = $(this);
+        var optionText = $option.find('.name').text();
+        var type = $option.classParam('type');
+        var $parent = $option.parent();
 
   // Set current option
   $option.addClass('current').siblings().removeClass('current ');
@@ -208,7 +280,6 @@ function selectAnOption(){
      });
   }
 
-
 }
 
 function showResultsBlock(blockName){
@@ -221,7 +292,6 @@ function showResultsBlock(blockName){
 
       $("#step5").show().siblings().hide();
       printGuidelinesToDownload();
-
 
     });
 
@@ -284,51 +354,50 @@ function showResultsBlock(blockName){
 
 
 
-function createZipFile(){
-  $.ajax({
-    type: "POST",
-    // url: "./api/zipFile",
-    url: "./api/guidelines/download",
-    data: {files: filesToZip, destination:"guidelinesDocuments.zip", overwrite:"true"},
-    success: function(data){
-      alert(data);
-    }
-  });
-}
+      function createZipFile(){
+        $.ajax({
+          type: "POST",
+          url: "./api/guidelinesLevels/download",
+          data: {files: filesToZip, destination:"./guidelinesDocuments.zip", overwrite:"true"},
+          success: function(data){
+            alert(data);
+          }
+        });
+      }
 
 
-/*********************************** Utils ************************************/
+      /*********************************** Utils ************************************/
 
 
 
-function getClassParameter(selector,cssName) {
-  var check = cssName + "-";
-  var className = $(selector).attr('class') || '';
-  var type = $.map(className.split(' '), function(val,i) {
-    if(val.indexOf(check) > -1) {
-      return val.slice(check.length, val.length);
-    }
-  });
-  return((type.join(' ')) || 'none');
-}
+      function getClassParameter(selector,cssName) {
+        var check = cssName + "-";
+        var className = $(selector).attr('class') || '';
+        var type = $.map(className.split(' '), function(val,i) {
+          if(val.indexOf(check) > -1) {
+            return val.slice(check.length, val.length);
+          }
+        });
+        return((type.join(' ')) || 'none');
+      }
 
-function cutText(str, l){
-  if (str.length > l){
-    str = str.slice(0,l) + '...';
-  }
-  return str;
-}
+      function cutText(str, l){
+        if (str.length > l){
+          str = str.slice(0,l) + '...';
+        }
+        return str;
+      }
 
-jQuery.fn.classParam = function(cssName) {
-  return getClassParameter(this, cssName)
-};
+      jQuery.fn.classParam = function(cssName) {
+        return getClassParameter(this, cssName)
+      };
 
-$.fn.extend({
-  animateCss: function (animationName) {
-    var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-    this.addClass('animated ' + animationName).one(animationEnd, function() {
-      $(this).removeClass('animated ' + animationName);
-    });
-    return this;
-  }
-});
+      $.fn.extend({
+        animateCss: function (animationName) {
+          var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+          this.addClass('animated ' + animationName).one(animationEnd, function() {
+            $(this).removeClass('animated ' + animationName);
+          });
+          return this;
+        }
+      });

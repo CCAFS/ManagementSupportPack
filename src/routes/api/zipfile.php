@@ -18,21 +18,14 @@ $app->add(function ($req, $res, $next) {
             //->withHeader('Content-Type', 'application/json');
 });
 
-$app->post("api/zipfiles", function(Request $request, Response $response){
+$app->post("api/zipfile", function(Request $request, Response $response){
 	echo "im here POST";
 	$params = $request.getParseBody();
 	zipFiles($params['files'], $params['destination'], $params['overwrite']);
 
 });
 
-$app->get("api/zipfiles", function(Request $request, Response $response){
 
-	echo "im here POST";
-	return "<script>console.log('get request zipfiles');</script>";
-	// $params = $request.getParseBody();
-	// zipFiles($params['files'], $params['destination'], $params['overwrite']);
-
-});
 
 function zipFiles($files = array(),$destination = '',$overwrite = false) {
 
