@@ -45,3 +45,50 @@ $app->get('/api/guidelinesLevels/{role}/{stage}/{category}', function(Request $r
         echo '{"error": {"text": '.$e->getMessage().'}';
     }
 });
+
+// Get Single person
+$app->get('/api/personId/{id}', function(Request $request, Response $response){
+    $id = $request->getAttribute('id');
+
+    $sql = "SELECT * FROM msp_person WHERE id = $id";
+
+    try{
+        // Get DB Object
+        $db = new db();
+        // Connect
+        $db = $db->connect();
+
+        $stmt = $db->query($sql);
+        $person = $stmt->fetch(PDO::FETCH_OBJ);
+        $db = null;
+        echo json_encode($person);
+    } catch(PDOException $e){
+        echo '{"error": {"text": '.$e->getMessage().'}';
+    }
+});
+
+// Get Single person
+$app->get('/api/personMail/{email}', function(Request $request, Response $response){
+    $id = $request->getAttribute('mail');
+
+    $sql = "SELECT * FROM msp_person WHERE email = $email";
+
+    try{
+        // Get DB Object
+        $db = new db();
+        // Connect
+        $db = $db->connect();
+
+        $stmt = $db->query($sql);
+        $person = $stmt->fetch(PDO::FETCH_OBJ);
+        $db = null;
+        echo json_encode($person);
+    } catch(PDOException $e){
+        echo '{"error": {"text": '.$e->getMessage().'}';
+    }
+});
+
+
+
+
+

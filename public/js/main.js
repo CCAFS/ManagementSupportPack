@@ -1,6 +1,20 @@
 var filterType,  listSelected,
 themePath = './vendor/',
-guideSelected = new Array();;
+guideSelected = new Array(),
+filesToZip = new Array(),
+ls = localStorage;
+
+function include(file)
+{
+
+  var script  = document.createElement('script');
+  script.src  = file;
+  script.type = 'text/javascript';
+  script.defer = true;
+
+  document.getElementsByTagName('head').item(0).appendChild(script);
+
+}
 
 $(document).ready(function() {
 
@@ -32,7 +46,6 @@ $(document).ready(function() {
     $("input:checkbox").click(function() {
       if($(this).attr("name") == "check-guidelines" ) {
         if($(this).prop('checked')){
-
           addGuideSelected($(this).attr("data-idbd"));   
         } else{
           removeGuideSelected($(this).attr("data-idbd")); 
@@ -42,29 +55,48 @@ $(document).ready(function() {
     });
 
     $( "a.download.1" ).click(function() {
-
       filterType = $(this).attr("id"); 
+      if(guideSelected.length > 0){
+        $("#step3").show().siblings().hide();
+      } else{    
+        $("#step1 .error").css("display", "block");
+      }
+
+
       
-      $("[name='check-guidelines']:checked")
-
-
-      $("#step3").show().siblings().hide();
     });
 
     // Step 4 (Terms and conditions) form contact
     $( "a.download.2" ).click(function() {
-      $("#step4").show().siblings().hide();
-    });
+      var email =$("input[name=mail]").val();
+      ls.setItem('email', email);
+      if( validateEmail(email)  ) {
+            //loadUser(email);
+            $("#step4").show().siblings().hide();
+            updateDataHeight();
+          } else {
+            $("#step3-form .error").css("display", "block");
+          }
+
+        });
 
     // Step 5 (Links for download)
     $( "a.download.3" ).click(function() {
 
       $("#step5").show().siblings().hide();
-      printGuidelinesToDownload();
+     printGuidelinesToDownload();
       $('.loading').fadeOut();    
+
+    });
+    
+    $( "a.download.5" ).click(function() {
+      document.getElementsByName("check-guidelines").checked=true;
+      
+      printGuidelinesToDownload();
     });
 
-    $( "a.download.5" ).click(function() {
+
+/*
       guideSelected = new Array();
       guideSelected[0] = {
         id: 999,
@@ -74,9 +106,11 @@ $(document).ready(function() {
         importance_level: "Optional"
       }
       $("#step3").show().siblings().hide();
-    });
+  
 
-  });
+      */
+
+    });
 
 /*********************************** Events ***********************************/
 
@@ -90,13 +124,14 @@ function attachEvents(){
 
 function ValidateFields(){
 
-  function validateEmail(emailField) {
-    var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-    if(emailField == "" || !emailReg.test(emailField)) {
-      return false;
-    } else {
-      return true;
-    }
+}
+
+function validateEmail(emailField) {
+  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+  if(emailField == "" || !emailReg.test(emailField)) {
+    return false;
+  } else {
+    return true;
   }
 }
 
@@ -186,7 +221,7 @@ function showResultsBlock(blockName){
 
       $("#step5").show().siblings().hide();
       printGuidelinesToDownload();
-      loaderStop();
+
 
     });
 
@@ -194,89 +229,106 @@ function showResultsBlock(blockName){
 
     function printGuidelinesToDownload(){
       var content = '<ul>';
-
       downloadText = ' Download',
-      className = '',
+      className = '', downloadLink = '';
+      var guideline;  
 
+      for (var i = 0; i<guideSelected.length; i++) {   
+        console.log(i);
+        guideline = guideSelected[i];
 
-      downloadLink = themePath+'download.php?file=';
+        filesToZip.push(guideSelected.source);
+        
+        downloadLink = location.pathname + '/data/' + guideline.source;
+        content += "<li>";
+        content += "    <a class='downloadLink "+className+"' href='"+downloadLink+"' >" + guideline.name;
+        content += "</li>";
+        console.log(content);
 
-      content += "<li>";
-      content += "    <a class='downloadLink "+className+"' href='"+downloadLink+"' >";
-      content += "    <span class='download' style='float:right'><img src='"+themePath+"images/dl.png'>"+downloadText+"</span></a>";
-      content += "</li>";
-
+        createZipFile();
+      }
       content += '</ul>';
-      $( "#step5 #guidelines" ).html(content);
+      $( "#step5 #guidelines").html(content);
+
 
     }
 
     /* This event is when the Checkbox was Selected or Unselected
     and fill a array guideSelected with new list selected      */
     function addGuideSelected(guide){
-
      guideSelected.push (JSON.parse(guide));
      console.log(guideSelected.length);
+   }
 
-
-     /* $("input[name^='"+name+"']").change(function() {
-        guideSelected = new Array();
-        $("input[name^='"+name+"']:checked").each(function(i) {
-          guideSelected[i] = dataLoaded[$(this).attr('id')];
-        });
-                console.log(guideSelected);
-      });
-      */
-    }
-
-    function removeGuideSelected(guide){
+   function removeGuideSelected(guide){
      console.log(guideSelected.length);
-
-     for (var i = guideSelected.length; i>0 ; i--) {       
-       if(guideSelected[i]==JSON.parse(guide)){
+     for (var i = guideSelected.length; i<0 ; i++) {       
+      if(guideSelected[i].equals(JSON.parse(guide))){
         delete guideSelected[i];
+        console.log(guideSelected.length);
+
       }
     }
 
+
   }
 
+  function getWindowHeight(){
+    return $("#block-system-main .content").height();
+  }
 
-
-
-  /*********************************** Utils ************************************/
-
-
-
-  function getClassParameter(selector,cssName) {
-    var check = cssName + "-";
-    var className = $(selector).attr('class') || '';
-    var type = $.map(className.split(' '), function(val,i) {
-      if(val.indexOf(check) > -1) {
-        return val.slice(check.length, val.length);
+  function updateDataHeight(){
+        // Update the attribute data-height in the body tag
+        $("body").attr("data-height", getWindowHeight());
       }
-    });
-    return((type.join(' ')) || 'none');
-  }
 
-  function cutText(str, l){
-    if (str.length > l){
-      str = str.slice(0,l) + '...';
-    }
-    return str;
-  }
 
-  jQuery.fn.classParam = function(cssName) {
-    return getClassParameter(this, cssName)
-  };
 
-  $.fn.extend({
-    animateCss: function (animationName) {
-      var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-      this.addClass('animated ' + animationName).one(animationEnd, function() {
-        $(this).removeClass('animated ' + animationName);
-      });
-      return this;
+function createZipFile(){
+  $.ajax({
+    type: "POST",
+    // url: "./api/zipFile",
+    url: "./api/guidelines/download",
+    data: {files: filesToZip, destination:"guidelinesDocuments.zip", overwrite:"true"},
+    success: function(data){
+      alert(data);
     }
   });
+}
 
 
+/*********************************** Utils ************************************/
+
+
+
+function getClassParameter(selector,cssName) {
+  var check = cssName + "-";
+  var className = $(selector).attr('class') || '';
+  var type = $.map(className.split(' '), function(val,i) {
+    if(val.indexOf(check) > -1) {
+      return val.slice(check.length, val.length);
+    }
+  });
+  return((type.join(' ')) || 'none');
+}
+
+function cutText(str, l){
+  if (str.length > l){
+    str = str.slice(0,l) + '...';
+  }
+  return str;
+}
+
+jQuery.fn.classParam = function(cssName) {
+  return getClassParameter(this, cssName)
+};
+
+$.fn.extend({
+  animateCss: function (animationName) {
+    var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+    this.addClass('animated ' + animationName).one(animationEnd, function() {
+      $(this).removeClass('animated ' + animationName);
+    });
+    return this;
+  }
+});

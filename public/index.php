@@ -30,4 +30,5 @@ require '../src/routes/application.php';
 // API Routes
 require '../src/routes/api/guidelines.php';
 
+
 $app->run();
