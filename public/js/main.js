@@ -79,6 +79,7 @@ $(document).ready(function() {
         $("#step4-form .error").html('Please fill out the information in the following fields :<br>'+verifiedText);
         $("#step4-form .error").css("display", "block");
       }else {
+        //setDownload();
         $("#step5").show().siblings().hide();
         printGuidelinesToDownload();
         $('.loading').fadeOut();
@@ -194,7 +195,7 @@ function loadUser(email) {
 
    },
    'complete': function(data) {
-    loaderStop();
+    
   }
 });
 }
@@ -286,6 +287,50 @@ function showResultsBlock(blockName){
 
     });
 
+    $( "a.skip.2" ).click(function() {
+      var verifiedText = verifyFields();
+        setDownload();
+        $("#step5").show().siblings().hide();
+        printGuidelinesToDownload();
+        $('.loading').fadeOut();
+    });
+
+
+ function setDownload(){
+
+  /*
+        arrayInstituteRegions = [];
+        $("input[name^='institute-regions']:checked").each(function(index) {
+            arrayInstituteRegions[index] = $(this).val();
+        });
+        arrayResearchRegions = [];
+        $("input[name^='research-regions']:checked").each(function(index) {
+            arrayResearchRegions[index] = $(this).val();
+        });
+        arrayguideSelected = [];
+        guideSelected.forEach(function(entry,index,array) {
+            arrayguideSelected[index] = entry.id
+        });
+*/
+        $.ajax({
+            type: "POST",
+            dataType: "text",
+            url: "./api/person/add",
+            data: {
+                userId: $("#user-id").val(),
+                email: $("#mail").val(),
+                firstName: $("#first_name").val(),
+                lastName: $("#last_name").val(),
+                use: $("#use").val(),
+            },
+      
+            success: function(downloadId) {
+            },
+            'complete': function(data) {
+                
+            },
+        });
+    }
 
 
 function printGuidelinesToDownload(){
@@ -304,14 +349,12 @@ function printGuidelinesToDownload(){
     content += "<li>";
     content += "    <a class='downloadLink "+className+"' href='"+downloadLink+"' >" + guideline.name;
     content += "</li>";
-    console.log(content);
 
     createZipFile();
+    //createGuidelineselectedList(guideSelected);
   }
   content += '</ul>';
   $( "#step5 #guidelines").html(content);
-
-
 }
 
 /* This event is when the Checkbox was Selected or Unselected
@@ -341,16 +384,33 @@ function updateDataHeight(){
 }
 
 function createZipFile(){
+
+
+
   $.ajax({
     type: "POST",
-    url: "./api/guidelinesLevels/download",
-    data: {files: filesToZip, destination:"./guidelinesDocuments.zip", overwrite:"true"},
+    contentType: 'application/json',
+    url: "./api/zipfile",
+    data: {files: filesToZip, destination:"guidelinesDocuments.zip", overwrite:"true"},
     success: function(data){
       alert(data);
     }
   });
 }
 
+/*
+function createGuidelineselectedList(selectedObj){
+  $.ajax({
+      type: "POST",
+      url: "./api/addSelectedGuidelines",
+      data: {},
+      method: "post",
+      success: function(data) {
+      
+      }
+    });
+}
+*/
 
 /*********************************** Utils ************************************/
 

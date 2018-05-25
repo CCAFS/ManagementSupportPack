@@ -69,7 +69,8 @@
             <span class="error" style="display: none;">Please check a file.</span>
             <div style="margin-top: 2px;height: 39px;">
               <a id="filtered-type" class="download 1 btn btn-primary">Download chosen documents</a>
-              <a class="download 5 btn btn-primary">Download full package</a>
+              
+              <!-- <a class="download 5 btn btn-primary">Download full package</a>-->
             </div>
           </div>
 
@@ -77,10 +78,12 @@
           <div id="step3" class="col-xs-12" style="display: none">
             <h2 class="headTitle">Terms and conditions</h2>
             <div id="step3-form" class="grayBox" >
-              <h5 class="text text-justify">To continue downloading your files, please first fill in your email and then some basic information. This information will be used by CCAFS solely for impact assessment and CGIAR and Center level reporting purposes. Filling it in will greatly help us to track the use of the portal and keep improving it. This portal provides data to a very large community of users and improving its usability and efficiency is a key aspect we work on continuously. However, you may click on <a id="skip-form" href="#">skip</a> to download links directly. </h5>
+              <h5 class="text text-justify">To continue downloading your files, please first fill in your email and then some basic information. This information will be used by CCAFS solely for impact assessment and CGIAR and Center level reporting purposes. Filling it in will greatly help us to track the use of the portal and keep improving it. This portal provides data to a very large community of users and improving its usability and efficiency is a key aspect we work on continuously. However, you may click on skip to download links directly.
+              <!--  <a id="skip-form" href="#">skip</a> to download links directly. </h5>-->
               Email: <input type="text" id="mail" name="mail" value=""/> <br>
               <span class="error" style="display: none;">Please enter a valid email address.</span>
               <br><a href="" class="download 4 btn btn-primary">Go Back</a> <a class="download 2 btn btn-primary">Next</a>
+              <a class="skip 2 btn btn-info">Skip</a>
             </div>
           </div>
           <!--end terms and conditions -->
@@ -139,7 +142,7 @@
             <h2 class="headTitle">Download</h2>
             <div id="result"></div>
             <div id="guidelines"></div>
-            <a href="" class="download 3 btn">New search</a>
+            <br><a href="" class="download 3 btn btn-primary">New search</a>
           </div>
           <!--end download step-->
       </div>

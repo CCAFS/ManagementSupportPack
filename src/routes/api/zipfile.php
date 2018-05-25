@@ -2,12 +2,7 @@
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-
 //$app = new \Slim\App;
-
-$app->options('/{routes:.+}', function ($request, $response, $args) {
-    return $response;
-});
 
 $app->add(function ($req, $res, $next) {
     $response = $next($req, $res);
@@ -17,18 +12,19 @@ $app->add(function ($req, $res, $next) {
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
             //->withHeader('Content-Type', 'application/json');
 });
-
-$app->post("api/zipfile", function(Request $request, Response $response){
-	echo "im here POST";
+$app->post("/api/zipfile", function(Request $request, Response $response){
+	
 	$params = $request.getParseBody();
+	
 	zipFiles($params['files'], $params['destination'], $params['overwrite']);
-
 });
 
+$app->get("/api/zipfile", function(Request $request, Response $response){
 
-
+	$params = $request.getParseBody();
+	zipFiles($params['files'], $params['destination'], $params['overwrite']);
+});
 function zipFiles($files = array(),$destination = '',$overwrite = false) {
-
 	echo "im here";
 	//if the zip file already exists and overwrite is false, return false
 	if(file_exists($destination) && !$overwrite) { return false; }
@@ -56,7 +52,7 @@ function zipFiles($files = array(),$destination = '',$overwrite = false) {
 			$zip->addFile($file,$file);
 		}
 		//debug
-		//echo 'The zip archive contains ',$zip->numFiles,' files with a status of ',$zip->status;
+		echo 'The zip archive contains ',$zip->numFiles,' files with a status of ',$zip->status;
 		
 		//close the zip -- done!
 		$zip->close();

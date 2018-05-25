@@ -86,3 +86,5 @@ $app->get('/guidelines', function ($request, $response, $args) {
     'categories' => $categories
   ]);
 })->setName('guidelines');
+
+?>
