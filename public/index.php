@@ -31,6 +31,5 @@ require '../src/routes/application.php';
 require '../src/routes/api/guidelines.php';
 require '../src/routes/api/person.php';
 require '../src/routes/api/zipfile.php';
-//require '../src/routes/zipArchive.php';
 
 $app->run();

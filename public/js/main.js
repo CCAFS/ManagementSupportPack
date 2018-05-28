@@ -40,24 +40,24 @@ $(document).ready(function() {
 
   /**********************Click Events********************************************/
 
-    $("input:checkbox").click(function() {
-      if($(this).attr("name") == "check-guidelines" ) {
-        if($(this).prop('checked')){
-          addGuideSelected($(this).attr("data-idbd"));
-        } else{
-          removeGuideSelected($(this).attr("data-idbd"));
-        }
-      }
-    });
-
-    $( "a.download.1" ).click(function() {
-      filterType = $(this).attr("id");
-      if(guideSelected.length > 0){
-        $("#step3").show().siblings().hide();
+  $("input:checkbox").click(function() {
+    if($(this).attr("name") == "check-guidelines" ) {
+      if($(this).prop('checked')){
+        addGuideSelected($(this).attr("data-idbd"));
       } else{
-        $("#step1 .error").css("display", "block");
+        removeGuideSelected($(this).attr("data-idbd"));
       }
-    });
+    }
+  });
+
+  $( "a.download.1" ).click(function() {
+    filterType = $(this).attr("id");
+    if(guideSelected.length > 0){
+      $("#step3").show().siblings().hide();
+    } else{
+      $("#step1 .error").css("display", "block");
+    }
+  });
 
     // Step 4 (Terms and conditions) form contact
     $( "a.download.2" ).click(function() {
@@ -71,7 +71,7 @@ $(document).ready(function() {
           $("#step3-form .error").css("display", "block");
         }
 
-    });
+      });
 
     // Step 5 (Links for download)
     $( "a.download.3" ).click(function() {
@@ -87,13 +87,26 @@ $(document).ready(function() {
       }
     });
 
+    //download individual files
     $( "a.download.5" ).click(function() {
+      deleteZipFile();
       document.getElementsByName("check-guidelines").checked=true;
       printGuidelinesToDownload();
+      console.log(window.location);
+    });
+
+    //donwload zip file - step5
+    $( "a.zipfileDownload" ).click(function() {
+      window.location="guidelinesDocuments.zip";
+      
+    });
+     //new search - step5 to step1
+     $("a.newSearch").click(function(){
+      $("#step1").show().siblings().hide();
     });
 
 
-  });
+   });
 
 /*********************************** Events ***********************************/
 
@@ -191,14 +204,13 @@ function loadUser(email) {
        $("#registered").val(data.last_name);
        $("#email").attr("disabled", "disabled");
        $("#email").val(data.email);
-
      }
 
    },
    'complete': function(data) {
-    
-  }
-});
+
+   }
+ });
 }
 
 
@@ -294,10 +306,10 @@ function showResultsBlock(blockName){
         $("#step5").show().siblings().hide();
         printGuidelinesToDownload();
         $('.loading').fadeOut();
-    });
+      });
 
 
- function setDownload(){
+    function setDownload(){
 
   /*
         arrayInstituteRegions = [];
@@ -312,44 +324,57 @@ function showResultsBlock(blockName){
         guideSelected.forEach(function(entry,index,array) {
             arrayguideSelected[index] = entry.id
         });
-*/
+        */
         $.ajax({
-            type: "POST",
-            dataType: "text",
-            url: "./api/person/add",
-            data: {
-                userId: $("#user-id").val(),
-                email: $("#mail").val(),
-                firstName: $("#first_name").val(),
-                lastName: $("#last_name").val(),
-                use: $("#use").val(),
-            },
-      
-            success: function(downloadId) {
-            },
-            'complete': function(data) {
-                
-            },
+          type: "POST",
+          dataType: "text",
+          url: "./api/person/add",
+          data: {
+            userId: $("#user-id").val(),
+            email: $("#mail").val(),
+            firstName: $("#first_name").val(),
+            lastName: $("#last_name").val(),
+            use: $("#use").val(),
+          },
+
+          success: function(downloadId) {
+          },
+          'complete': function(data) {
+
+          },
         });
+      }
+
+      function deleteZipFile(){
+        $zipFileName = "guidelinesDocuments.zip";
+        $.ajax({
+          type: "GET",   
+          url: "./api/zipfile/deleteZipFile",
+          data: {file: $zipFileName},
+          success: function(data){
+
+      //alert(data);
     }
+  });
+      }
 
 
-function printGuidelinesToDownload(){
-  var content = '<ul>';
-  downloadText = ' Download',
-  className = '', downloadLink = '';
-  var guideline;
+      function printGuidelinesToDownload(){
+        var content = '<ul>';
+        downloadText = ' Download',
+        className = '', downloadLink = '';
+        var guideline;
 
-  for (var i = 0; i<guideSelected.length; i++) {
+        for (var i = 0; i<guideSelected.length; i++) {
 
-    guideline = guideSelected[i];
+          guideline = guideSelected[i];
 
-    downloadLink = location.pathname + '/data/' + guideline.source;
-    content += "<li>";
-    content += "    <a class='downloadLink "+className+"' href='"+downloadLink+"' >" + guideline.name;
-    content += "</li>";
-// console.log(downloadLink);
-    filesToZip.push(downloadLink.split('//')[1]);
+          downloadLink = location.pathname + '/data/' + guideline.source;
+          content += "<li>";
+          content += "    <a class='downloadLink "+className+"' href='"+downloadLink+"' >" + guideline.name;
+          content += "</li>";
+
+          filesToZip.push(downloadLink.split('//')[1]);
 
     //createGuidelineselectedList(guideSelected);
   }
@@ -366,13 +391,13 @@ function addGuideSelected(guide){
 }
 
 function removeGuideSelected(guide){
- 
-   for (var i = guideSelected.length; i<0 ; i++) {
-      if(guideSelected[i].equals(JSON.parse(guide))){
-        delete guideSelected[i];
-  
-      }
-    }
+
+ for (var i = guideSelected.length; i<0 ; i++) {
+  if(guideSelected[i].equals(JSON.parse(guide))){
+    delete guideSelected[i];
+
+  }
+}
 }
 
 function getWindowHeight(){
@@ -385,25 +410,15 @@ function updateDataHeight(){
 }
 
 function createZipFile(){
-  /*
+  $zipName = "guidelinesDocuments.zip";
+
+
   $.ajax({
-    type: "POST",
-    dataType: "text",
-    url: "./api/zipfile",
-    data: {files: filesToZip, destination:"guidelinesDocuments.zip", overwrite:"true"},
-    success: function(data){
-      alert(data);
-    }
-  });
-*/
-console.log(filesToZip );
-
-   $.ajax({
-
     type: "POST",   
     url: "./api/zipfile",
-    data: {files: filesToZip, destination: "guidelinesDocuments.zip" , overwrite:"true"},
+    data: {files: filesToZip, destination: $zipName , overwrite:"true"},
     success: function(data){
+
       //alert(data);
     }
   });

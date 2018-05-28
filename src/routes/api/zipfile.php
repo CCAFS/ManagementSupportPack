@@ -2,40 +2,25 @@
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-//$app = new \Slim\App;
 
 $app->add(function ($req, $res, $next) {
-    $response = $next($req, $res);
-    return $response
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-            //->withHeader('Content-Type', 'application/json');
+	$response = $next($req, $res);
+	return $response
+	->withHeader('Access-Control-Allow-Origin', '*')
+	->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+	->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 });
 $app->POST("/api/zipfile", function(Request $request, Response $response){
-  	$files = array();
- 
-  //$guidelines=json_decode($_POST['files']);
-
+	$files = array();
 
 	$files = $_POST['files'];
 	$destination = $_POST['destination'];
 	$overwrite = $_POST['overwrite'];
 	
-	//zipFiles($params['files'], $params['destination'], $params['overwrite']);
 	zipFiles($files, $destination, $overwrite);
 	
 });
-/*
-$test = $request -> getParseBody()['destination'];
-	echo $test;
 
-$app->GET("/api/zipfile", function(Request $request, Response $response){
-	echo "im here POST";
-	$params = $request.getParsedBody();
-	zipFiles($params['files'], $params['destination'], $params['overwrite']);
-});
-*/
 function zipFiles($files = array(),$destination = '',$overwrite = false) {
 
 	
@@ -51,7 +36,7 @@ function zipFiles($files = array(),$destination = '',$overwrite = false) {
 
 			//if(file_exists($file)) {
 
-				$valid_files[] = $file;
+			$valid_files[] = $file;
 			//}
 		}
 	}
@@ -62,43 +47,50 @@ function zipFiles($files = array(),$destination = '',$overwrite = false) {
 		$zip = new ZipArchive();
 		
 		//if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
-		  if($zip->open($destination,ZIPARCHIVE::CREATE)!==true) {
-		  	
+		if($zip->open($destination, ZIPARCHIVE::CREATE)!==true) {
+			
 			return false;
 		}
 
 
-		//
-	
-
-		//add the files
-		/*
-		foreach($valid_files as $file) {
-			echo "hola3";
-			//$zip->addFile($file, basename($file));
-			$zip->addFile('test.txt','test.txt');
-		}
-*/
-
 		for($i=0;$i<count($valid_files); $i++){
 			
 			$localfile = basename($valid_files[$i]);
-			//$zip->addFile($file, basename($file));
 			$zip->addFile("$valid_files[$i]", $localfile);
 		}
 		
-		//debug
-		//echo 'The zip archive contains ',$zip->numFiles,' files with a status of ',$zip->status;
-		
-		//close the zip -- done!
 		$zip->close();
+
+		//Download zip file 
+		header('Content-type: application/zip');
+		header('Content-Disposition: attachment; filename="'.($destination).'"');
+		header("Content-length: " . filesize($destination));
+		header("Pragma: no-cache");
+		header("Expires: 0");
+
+		ob_clean();
+		flush();
+
+		readfile($destination);
+
+		exit;
 		
-		//check to make sure the file exists
-		return ($destination);
 	}
 	else
 	{
 		return false;
 	}
 }
+
+$app->GET("/api/zipfile/deleteFile", function(Request $request, Response $response){
+
+	try {
+		unlink($_GET['file']);
+	} catch (Exception $e) {
+		echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+	}
+	
+});
+
+
 
