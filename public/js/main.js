@@ -348,8 +348,8 @@ function printGuidelinesToDownload(){
     content += "<li>";
     content += "    <a class='downloadLink "+className+"' href='"+downloadLink+"' >" + guideline.name;
     content += "</li>";
-
-    filesToZip.push(downloadLink);
+// console.log(downloadLink);
+    filesToZip.push(downloadLink.split('//')[1]);
 
     //createGuidelineselectedList(guideSelected);
   }
@@ -404,7 +404,7 @@ console.log(filesToZip );
     url: "./api/zipfile",
     data: {files: filesToZip, destination: "guidelinesDocuments.zip" , overwrite:"true"},
     success: function(data){
-      alert(data);
+      //alert(data);
     }
   });
 

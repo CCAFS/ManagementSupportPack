@@ -4,10 +4,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 //$app = new \Slim\App;
 
-$app->options('/{routes:.+}', function ($request, $response, $args) {
-    return $response;
-});
-
 $app->add(function ($req, $res, $next) {
     $response = $next($req, $res);
     return $response
@@ -17,19 +13,10 @@ $app->add(function ($req, $res, $next) {
             //->withHeader('Content-Type', 'application/json');
 });
 
-// Get All Customers
-$app->get('/api/guidelinesLevels/{role}/{stage}/{category}', function(Request $request, Response $response){
-    $r = $request->getAttribute('role');
-    $s= $request->getAttribute('stage');
-    $c= $request->getAttribute('category');
-    $sql = "SELECT g.id,g.code,g.name,g.type,g.source, il.importance_level
-            FROM msp_importance_levels il
-            INNER JOIN msp_categories c ON il.category_id = c.id
-            INNER JOIN msp_stages s ON il.stage_id = s.id
-            INNER JOIN msp_roles r ON il.role_id = r.id
-            INNER JOIN msp_guidelines g ON il.guideline_id = g.id
-            WHERE il.role_id = ".$r." and il.stage_id= ".$s." and il.category_id=".$c."
-            ORDER BY g.code";
+
+// Get All persons
+$app->get('/api/persons', function(Request $request, Response $response){
+    $sql = "SELECT * FROM msp_person";
 
     try{
         // Get DB Object
@@ -38,15 +25,15 @@ $app->get('/api/guidelinesLevels/{role}/{stage}/{category}', function(Request $r
         $db = $db->connect();
 
         $stmt = $db->query($sql);
-        $customers = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $person = $stmt->fetchAll(PDO::FETCH_OBJ);
         $db = null;
-        echo json_encode($customers);
+        echo json_encode($person);
     } catch(PDOException $e){
         echo '{"error": {"text": '.$e->getMessage().'}';
     }
 });
 
-// Get Single person
+// Get Single person by id
 $app->get('/api/personId/{id}', function(Request $request, Response $response){
     $id = $request->getAttribute('id');
 
@@ -67,7 +54,7 @@ $app->get('/api/personId/{id}', function(Request $request, Response $response){
     }
 });
 
-// Get Single person
+// Get Single person by email
 $app->get('/api/personMail/{email}', function(Request $request, Response $response){
     $id = $request->getAttribute('mail');
 
@@ -87,6 +74,38 @@ $app->get('/api/personMail/{email}', function(Request $request, Response $respon
         echo '{"error": {"text": '.$e->getMessage().'}';
     }
 });
+
+//add person
+$app->post('/api/person/add', function(Request $request, Response $response){
+    echo "Estoy aqui";
+    $first_name = $request->getParam('first_name');
+    $last_name = $request->getParam('last_name');
+    $email = $request->getParam('email');
+    $registered = strlen(new DateTime());
+    $sql = "INSERT INTO msp_person (first_name,last_name,registered,email) VALUES
+    (:first_name,:last_name,:registered,:email)";
+
+    try{
+        // Get DB Object
+        $db = new db();
+        // Connect
+        $db = $db->connect();
+
+        $stmt = $db->prepare($sql);
+
+        $stmt->bindParam(':first_name', $first_name);
+        $stmt->bindParam(':last_name',  $last_name);
+        $stmt->bindParam(':registered', $registered);
+        $stmt->bindParam(':email',      $email);
+        $stmt->execute();
+
+        echo '{"notice": {"text": "Person Added"}';
+
+    } catch(PDOException $e){
+        echo '{"error": {"text": '.$e->getMessage().'}';
+    }
+});
+
 
 
 

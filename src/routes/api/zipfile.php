@@ -36,24 +36,21 @@ $app->GET("/api/zipfile", function(Request $request, Response $response){
 	zipFiles($params['files'], $params['destination'], $params['overwrite']);
 });
 */
-//function zipFiles($files = array(),$destination = '',$overwrite = false) {
-	function zipFiles($files = array(),$destination,$overwrite) {
+function zipFiles($files = array(),$destination = '',$overwrite = false) {
 
+	
 	//if the zip file already exists and overwrite is false, return false
 	if(file_exists($destination) && !$overwrite) { return false; }
 	//vars
 	$valid_files = array();
 	//if files were passed in...
-	
-	
 	if(is_array($files)) {
-		
 		//cycle through each file
 		foreach($files as $file) {
-
 			//make sure the file exists
+
 			//if(file_exists($file)) {
-			
+
 				$valid_files[] = $file;
 			//}
 		}
@@ -63,25 +60,41 @@ $app->GET("/api/zipfile", function(Request $request, Response $response){
 
 		//create the archive
 		$zip = new ZipArchive();
-
-		if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
+		
+		//if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
+		  if($zip->open($destination,ZIPARCHIVE::CREATE)!==true) {
+		  	
 			return false;
 		}
-		//add the files
 
-		foreach($valid_files as $file) {
-			echo $file;
-			$zip->addFile($file,$file);
-		}
+
+		//
 	
+
+		//add the files
+		/*
+		foreach($valid_files as $file) {
+			echo "hola3";
+			//$zip->addFile($file, basename($file));
+			$zip->addFile('test.txt','test.txt');
+		}
+*/
+
+		for($i=0;$i<count($valid_files); $i++){
+			
+			$localfile = basename($valid_files[$i]);
+			//$zip->addFile($file, basename($file));
+			$zip->addFile("$valid_files[$i]", $localfile);
+		}
+		
 		//debug
-		echo 'The zip archive contains ',$zip->numFiles,' files with a status of ',$zip->status;
+		//echo 'The zip archive contains ',$zip->numFiles,' files with a status of ',$zip->status;
 		
 		//close the zip -- done!
 		$zip->close();
 		
 		//check to make sure the file exists
-		return file_exists($destination);
+		return ($destination);
 	}
 	else
 	{
