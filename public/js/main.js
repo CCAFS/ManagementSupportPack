@@ -2,6 +2,7 @@ var filterType,  listSelected,
 themePath = './vendor/',
 guideSelected = new Array(),
 filesToZip = new Array(),
+
 ls = localStorage;
 
 function include(file)
@@ -289,7 +290,7 @@ function showResultsBlock(blockName){
 
     $( "a.skip.2" ).click(function() {
       var verifiedText = verifyFields();
-        setDownload();
+        //setDownload();
         $("#step5").show().siblings().hide();
         printGuidelinesToDownload();
         $('.loading').fadeOut();
@@ -340,19 +341,19 @@ function printGuidelinesToDownload(){
   var guideline;
 
   for (var i = 0; i<guideSelected.length; i++) {
-    console.log(i);
-    guideline = guideSelected[i];
 
-    filesToZip.push(guideSelected.source);
+    guideline = guideSelected[i];
 
     downloadLink = location.pathname + '/data/' + guideline.source;
     content += "<li>";
     content += "    <a class='downloadLink "+className+"' href='"+downloadLink+"' >" + guideline.name;
     content += "</li>";
 
-    createZipFile();
+    filesToZip.push(downloadLink);
+
     //createGuidelineselectedList(guideSelected);
   }
+  createZipFile();
   content += '</ul>';
   $( "#step5 #guidelines").html(content);
 }
@@ -361,15 +362,15 @@ function printGuidelinesToDownload(){
 and fill a array guideSelected with new list selected      */
 function addGuideSelected(guide){
  guideSelected.push (JSON.parse(guide));
- console.log(guideSelected.length);
+
 }
 
 function removeGuideSelected(guide){
-   console.log(guideSelected.length);
+ 
    for (var i = guideSelected.length; i<0 ; i++) {
       if(guideSelected[i].equals(JSON.parse(guide))){
         delete guideSelected[i];
-        console.log(guideSelected.length);
+  
       }
     }
 }
@@ -384,18 +385,31 @@ function updateDataHeight(){
 }
 
 function createZipFile(){
-
-
-
+  /*
   $.ajax({
     type: "POST",
-    contentType: 'application/json',
+    dataType: "text",
     url: "./api/zipfile",
     data: {files: filesToZip, destination:"guidelinesDocuments.zip", overwrite:"true"},
     success: function(data){
       alert(data);
     }
   });
+*/
+console.log(filesToZip );
+
+   $.ajax({
+
+    type: "POST",   
+    url: "./api/zipfile",
+    data: {files: filesToZip, destination: "guidelinesDocuments.zip" , overwrite:"true"},
+    success: function(data){
+      alert(data);
+    }
+  });
+
+
+
 }
 
 /*

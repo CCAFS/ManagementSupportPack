@@ -12,45 +12,68 @@ $app->add(function ($req, $res, $next) {
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
             //->withHeader('Content-Type', 'application/json');
 });
-$app->post("/api/zipfile", function(Request $request, Response $response){
+$app->POST("/api/zipfile", function(Request $request, Response $response){
+  	$files = array();
+ 
+  //$guidelines=json_decode($_POST['files']);
+
+
+	$files = $_POST['files'];
+	$destination = $_POST['destination'];
+	$overwrite = $_POST['overwrite'];
 	
-	$params = $request.getParseBody();
+	//zipFiles($params['files'], $params['destination'], $params['overwrite']);
+	zipFiles($files, $destination, $overwrite);
 	
+});
+/*
+$test = $request -> getParseBody()['destination'];
+	echo $test;
+
+$app->GET("/api/zipfile", function(Request $request, Response $response){
+	echo "im here POST";
+	$params = $request.getParsedBody();
 	zipFiles($params['files'], $params['destination'], $params['overwrite']);
 });
+*/
+//function zipFiles($files = array(),$destination = '',$overwrite = false) {
+	function zipFiles($files = array(),$destination,$overwrite) {
 
-$app->get("/api/zipfile", function(Request $request, Response $response){
-
-	$params = $request.getParseBody();
-	zipFiles($params['files'], $params['destination'], $params['overwrite']);
-});
-function zipFiles($files = array(),$destination = '',$overwrite = false) {
-	echo "im here";
 	//if the zip file already exists and overwrite is false, return false
 	if(file_exists($destination) && !$overwrite) { return false; }
 	//vars
 	$valid_files = array();
 	//if files were passed in...
+	
+	
 	if(is_array($files)) {
+		
 		//cycle through each file
 		foreach($files as $file) {
+
 			//make sure the file exists
-			if(file_exists($file)) {
+			//if(file_exists($file)) {
+			
 				$valid_files[] = $file;
-			}
+			//}
 		}
 	}
 	//if we have good files...
 	if(count($valid_files)) {
+
 		//create the archive
 		$zip = new ZipArchive();
+
 		if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
 			return false;
 		}
 		//add the files
+
 		foreach($valid_files as $file) {
+			echo $file;
 			$zip->addFile($file,$file);
 		}
+	
 		//debug
 		echo 'The zip archive contains ',$zip->numFiles,' files with a status of ',$zip->status;
 		
