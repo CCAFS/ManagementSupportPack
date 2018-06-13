@@ -98,7 +98,7 @@ $(document).ready(function() {
     //donwload zip file - step5
     $( "a.zipfileDownload" ).click(function() {
       window.location="guidelinesDocuments.zip";
-      
+
     });
      //new search - step5 to step1
      $("a.newSearch").click(function(){
@@ -262,7 +262,7 @@ function selectAnOption(){
          //Add guidelines
          $.each(guidelines, function(i, guideline){
            // Create guideline from template
-           var $guideline = $('#guideline-template').clone(true);
+           var $guideline = $('#guideline-template').clone(true).removeAttr('id');
 
            // Add guideline title
            $guideline.find('.title').text(guideline.code+' '+guideline.name);
@@ -348,7 +348,7 @@ function showResultsBlock(blockName){
       function deleteZipFile(){
         $zipFileName = "guidelinesDocuments.zip";
         $.ajax({
-          type: "GET",   
+          type: "GET",
           url: "./api/zipfile/deleteZipFile",
           data: {file: $zipFileName},
           success: function(data){
@@ -370,8 +370,8 @@ function showResultsBlock(blockName){
           guideline = guideSelected[i];
 
           downloadLink = location.pathname + '/data/' + guideline.source;
-          content += "<li>";
-          content += "    <a class='downloadLink "+className+"' href='"+downloadLink+"' >" + guideline.name;
+          content += "<li class='guideline inputsFlat'>";
+          content += "    <a class='downloadLink "+className+"' href='"+downloadLink+"'  target='_blank'>" + guideline.name;
           content += "</li>";
 
           filesToZip.push(downloadLink.split('//')[1]);
@@ -414,7 +414,7 @@ function createZipFile(){
 
 
   $.ajax({
-    type: "POST",   
+    type: "POST",
     url: "./api/zipfile",
     data: {files: filesToZip, destination: $zipName , overwrite:"true"},
     success: function(data){
@@ -435,7 +435,7 @@ function createGuidelineselectedList(selectedObj){
       data: {},
       method: "post",
       success: function(data) {
-      
+
       }
     });
 }

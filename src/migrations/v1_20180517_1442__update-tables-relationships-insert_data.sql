@@ -156,6 +156,8 @@ CREATE TABLE `msp_guidelines` (
 -- Dumping data for table `msp_guidelines`
 --
 
+
+TRUNCATE `msp_guidelines`;
 LOCK TABLES `msp_guidelines` WRITE;
 /*!40000 ALTER TABLE `msp_guidelines` DISABLE KEYS */;
 INSERT INTO `msp_guidelines` (`id`, `code`, `name`, `type`, `source`) VALUES (1,'1.1.','CGIAR Open Access & Data Management Policy',0,'');
