@@ -18,7 +18,6 @@ $app->POST("/api/zipfile", function(Request $request, Response $response){
 	$files = $_POST['files'];
 	$overwrite = $_POST['overwrite'];
 
-<<<<<<< HEAD
 	zipFiles($files, $overwrite);
 
 });
@@ -42,15 +41,6 @@ function zipFiles($files = array(), $overwrite = true) {
     	mkdir($carpeta, 0777, true);
 	}
 
-=======
-	zipFiles($files, $destination, $overwrite);
-
-});
-
-function zipFiles($files = array(),$destination = '',$overwrite = true) {
-
-
->>>>>>> 62c6f3bd03f052eeae27f7d395ba2c222af17252
 	//if the zip file already exists and overwrite is false, return false
 	if(file_exists($zipName) && !$overwrite) { return false; }
 	//vars
@@ -71,33 +61,24 @@ function zipFiles($files = array(),$destination = '',$overwrite = true) {
 
 		//create the archive
 		$zip = new ZipArchive();
-
+		
 		//if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
-<<<<<<< HEAD
 		if($zip->open($zipName, ZIPARCHIVE::CREATE)!==true) {
 			
-=======
-		if($zip->open($destination, ZIPARCHIVE::CREATE)!==true) {
-
->>>>>>> 62c6f3bd03f052eeae27f7d395ba2c222af17252
 			return false;
 		}
 
 
 		for($i=0;$i<count($valid_files); $i++){
-
+			
 			$localfile = basename($valid_files[$i]);
 			$zip->addFile("$valid_files[$i]", $localfile);
 		}
-
+		
 		$zip->close();
 
-<<<<<<< HEAD
 		//Download zip file 
 		/*
-=======
-		//Download zip file
->>>>>>> 62c6f3bd03f052eeae27f7d395ba2c222af17252
 		header('Content-type: application/zip');
 		header('Content-Disposition: attachment; filename="'.($zipName).'"');
 		header("Content-length: " . filesize($zipName));
@@ -111,12 +92,7 @@ function zipFiles($files = array(),$destination = '',$overwrite = true) {
 		//readfile($zipName);
 		//return $zipName;
 
-<<<<<<< HEAD
 		//exit;		
-=======
-		exit;
-
->>>>>>> 62c6f3bd03f052eeae27f7d395ba2c222af17252
 	}
 	else
 	{
@@ -130,5 +106,8 @@ $app->GET("/api/zipfile/deleteFile", function(Request $request, Response $respon
 	} catch (Exception $e) {
 		echo 'Excepción capturada: ',  $e->getMessage(), "\n";
 	}
-
+	
 });
+
+
+
