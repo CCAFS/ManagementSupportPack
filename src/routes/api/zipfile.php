@@ -16,14 +16,14 @@ $app->POST("/api/zipfile", function(Request $request, Response $response){
 	$files = $_POST['files'];
 	$destination = $_POST['destination'];
 	$overwrite = $_POST['overwrite'];
-	
+
 	zipFiles($files, $destination, $overwrite);
-	
+
 });
 
-function zipFiles($files = array(),$destination = '',$overwrite = false) {
+function zipFiles($files = array(),$destination = '',$overwrite = true) {
 
-	
+
 	//if the zip file already exists and overwrite is false, return false
 	if(file_exists($destination) && !$overwrite) { return false; }
 	//vars
@@ -45,23 +45,23 @@ function zipFiles($files = array(),$destination = '',$overwrite = false) {
 
 		//create the archive
 		$zip = new ZipArchive();
-		
+
 		//if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
 		if($zip->open($destination, ZIPARCHIVE::CREATE)!==true) {
-			
+
 			return false;
 		}
 
 
 		for($i=0;$i<count($valid_files); $i++){
-			
+
 			$localfile = basename($valid_files[$i]);
 			$zip->addFile("$valid_files[$i]", $localfile);
 		}
-		
+
 		$zip->close();
 
-		//Download zip file 
+		//Download zip file
 		header('Content-type: application/zip');
 		header('Content-Disposition: attachment; filename="'.($destination).'"');
 		header("Content-length: " . filesize($destination));
@@ -74,7 +74,7 @@ function zipFiles($files = array(),$destination = '',$overwrite = false) {
 		readfile($destination);
 
 		exit;
-		
+
 	}
 	else
 	{
@@ -89,8 +89,5 @@ $app->GET("/api/zipfile/deleteFile", function(Request $request, Response $respon
 	} catch (Exception $e) {
 		echo 'Excepción capturada: ',  $e->getMessage(), "\n";
 	}
-	
+
 });
-
-
-
