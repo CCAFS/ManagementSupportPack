@@ -241,6 +241,10 @@ function selectAnOption(){
       's': $('li.type-stage.current').classParam('id'),
       'c': $('li.type-category.current').classParam('id')
     }
+
+    $('#step1').show();
+    $('#step3, #step4, #step5').hide();
+
     // Find recomended
     $.ajax({
      url: './api/guidelinesLevels/'+options.r+'/'+options.s+'/'+options.c,
