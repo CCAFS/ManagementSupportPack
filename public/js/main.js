@@ -2,6 +2,7 @@ var filterType,  listSelected,
 themePath = './vendor/',
 guideSelected = new Array(),
 filesToZip = new Array(),
+zipFileName = "";
 
 ls = localStorage;
 
@@ -97,7 +98,7 @@ $(document).ready(function() {
 
     //donwload zip file - step5
     $( "a.zipfileDownload" ).click(function() {
-      window.location="guidelinesDocuments.zip";
+      window.location="export/"+zipFileName;
       
     });
      //new search - step5 to step1
@@ -346,11 +347,11 @@ function showResultsBlock(blockName){
       }
 
       function deleteZipFile(){
-        $zipFileName = "guidelinesDocuments.zip";
+       
         $.ajax({
           type: "GET",   
           url: "./api/zipfile/deleteZipFile",
-          data: {file: $zipFileName},
+          data: {file: "export/"+zipFileName},
           success: function(data){
 
       //alert(data);
@@ -410,22 +411,23 @@ function updateDataHeight(){
 }
 
 function createZipFile(){
-  $zipName = "guidelinesDocuments.zip";
-
-
+ 
+  
   $.ajax({
     type: "POST",   
     url: "./api/zipfile",
-    data: {files: filesToZip, destination: $zipName , overwrite:"true"},
+    data: {files: filesToZip, overwrite:"true"},
     success: function(data){
-
+         //zipFileName = jQuery.parseJSON(data);
+         console.log(data);
+         $('.zipfileDownload').attr('href', "./"+data);
       //alert(data);
     }
   });
 
-
-
 }
+
+
 
 /*
 function createGuidelineselectedList(selectedObj){
