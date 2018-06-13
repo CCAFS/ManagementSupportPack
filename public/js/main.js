@@ -90,15 +90,15 @@ $(document).ready(function() {
 
     //download individual files
     $( "a.download.5" ).click(function() {
-      deleteZipFile();
       document.getElementsByName("check-guidelines").checked=true;
       printGuidelinesToDownload();
       console.log(window.location);
     });
 
     //donwload zip file - step5
-    $( "a.zipfileDownload" ).click(function() {
-      window.location="export/"+zipFileName;
+    $( "a.zipfileDownload" ).on('click', function() {
+      var fileName = $(this).attr('href');
+      setTimeout(function(){ deleteZipFile(fileName); }, 3000);
       
     });
      //new search - step5 to step1
@@ -293,13 +293,13 @@ function showResultsBlock(blockName){
 }
 
     // skip-form (Links for download)
-    $("#skip-form").on("click", function(event) {
-      event.preventDefault();
+$("#skip-form").on("click", function(event) {
+  event.preventDefault();
 
-      $("#step5").show().siblings().hide();
-      printGuidelinesToDownload();
+  $("#step5").show().siblings().hide();
+  printGuidelinesToDownload();
 
-    });
+});
 
     $( "a.skip.2" ).click(function() {
       var verifiedText = verifyFields();
@@ -311,21 +311,6 @@ function showResultsBlock(blockName){
 
 
     function setDownload(){
-
-  /*
-        arrayInstituteRegions = [];
-        $("input[name^='institute-regions']:checked").each(function(index) {
-            arrayInstituteRegions[index] = $(this).val();
-        });
-        arrayResearchRegions = [];
-        $("input[name^='research-regions']:checked").each(function(index) {
-            arrayResearchRegions[index] = $(this).val();
-        });
-        arrayguideSelected = [];
-        guideSelected.forEach(function(entry,index,array) {
-            arrayguideSelected[index] = entry.id
-        });
-        */
         $.ajax({
           type: "POST",
           dataType: "text",
@@ -346,14 +331,13 @@ function showResultsBlock(blockName){
         });
       }
 
-      function deleteZipFile(){
+      function deleteZipFile(fileName){
        
         $.ajax({
           type: "GET",   
-          url: "./api/zipfile/deleteZipFile",
-          data: {file: "export/"+zipFileName},
+          url: "./api/zipfile/deleteFile",
+          data: {file: fileName},
           success: function(data){
-
       //alert(data);
     }
   });
@@ -418,30 +402,11 @@ function createZipFile(){
     url: "./api/zipfile",
     data: {files: filesToZip, overwrite:"true"},
     success: function(data){
-         //zipFileName = jQuery.parseJSON(data);
-         console.log(data);
-         $('.zipfileDownload').attr('href', "./"+data);
-      //alert(data);
+         $('a.zipfileDownload').attr('href', "./"+data);
     }
   });
 
 }
-
-
-
-/*
-function createGuidelineselectedList(selectedObj){
-  $.ajax({
-      type: "POST",
-      url: "./api/addSelectedGuidelines",
-      data: {},
-      method: "post",
-      success: function(data) {
-      
-      }
-    });
-}
-*/
 
 /*********************************** Utils ************************************/
 

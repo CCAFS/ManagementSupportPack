@@ -22,18 +22,9 @@ $app->POST("/api/zipfile", function(Request $request, Response $response){
 
 });
 
-$app->POST("/api/zipfile/getName", function(Request $request, Response $response){
-	$files = array();
-
-	$files = $_POST['files'];
-	$overwrite = $_POST['overwrite'];
-	
-	zipFiles($files, $overwrite);
-});
-
 
 function zipFiles($files = array(), $overwrite = true) {
-	$date = date("Ymd").date("h-i-s");
+	$date = date("Ymd").date("H-i-s");
 	$zipName = 'export/guidelinesDocuments'.$date.'.zip';
 
 	$carpeta = 'export';
@@ -101,6 +92,7 @@ function zipFiles($files = array(), $overwrite = true) {
 }
 
 $app->GET("/api/zipfile/deleteFile", function(Request $request, Response $response){
+
 	try {
 		unlink($_GET['file']);
 	} catch (Exception $e) {
