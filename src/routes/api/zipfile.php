@@ -17,89 +17,63 @@ $app->POST("/api/zipfile", function(Request $request, Response $response){
 
 	$files = $_POST['files'];
 	$overwrite = $_POST['overwrite'];
+	try {
+		zipFiles($files, $overwrite);
+	} catch (Exception $e) {
+		echo 'Exception: ',  $e->getMessage(), "\n";
+	}
+});
 
-	zipFiles($files, $overwrite);
-
+$app->GET("/api/zipfile/deleteFile", function(Request $request, Response $response){
+	try {
+		unlink($_GET['file']);
+	} catch (Exception $e) {
+		echo 'Excepción capturada: ',  $e->getMessage(), "\n";
+	}
 });
 
 
+/*******************  Functions *************************************/
+
 function zipFiles($files = array(), $overwrite = true) {
-	$date = date("Ymd").date("H-i-s");
-	$zipName = 'export/guidelinesDocuments'.$date.'.zip';
+	$date = date("Ymd").date("_His");
+	$zipName = 'export/guidelinesDocuments_'.$date.'.zip';
 
 	$carpeta = 'export';
 	if (!file_exists($carpeta)) {
     	mkdir($carpeta, 0777, true);
 	}
 
-	//if the zip file already exists and overwrite is false, return false
-	if(file_exists($zipName) && !$overwrite) { return false; }
 	//vars
 	$valid_files = array();
-	//if files were passed in...
+	// If files were passed in...
 	if(is_array($files)) {
 		//cycle through each file
 		foreach($files as $file) {
 			//make sure the file exists
-
 			//if(file_exists($file)) {
 			$valid_files[] = $file;
 			//}
 		}
 	}
-	//if we have good files...
+	// If we have good files...
 	if(count($valid_files)) {
-
 		//create the archive
 		$zip = new ZipArchive();
-		
 		//if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
 		if($zip->open($zipName, ZIPARCHIVE::CREATE)!==true) {
-			
 			return false;
 		}
 
-
 		for($i=0;$i<count($valid_files); $i++){
-			
 			$localfile = basename($valid_files[$i]);
 			$zip->addFile("$valid_files[$i]", $localfile);
 		}
-		
 		$zip->close();
 
-		//Download zip file 
-		/*
-		header('Content-type: application/zip');
-		header('Content-Disposition: attachment; filename="'.($zipName).'"');
-		header("Content-length: " . filesize($zipName));
-		header("Pragma: no-cache");
-		header("Expires: 0");
-*/
-
-		//ob_clean();
-		//flush();
 		echo $zipName;
-		//readfile($zipName);
-		//return $zipName;
 
-		//exit;		
-	}
-	else
-	{
+	}else{
 		return false;
 	}
 }
-
-$app->GET("/api/zipfile/deleteFile", function(Request $request, Response $response){
-
-	try {
-		unlink($_GET['file']);
-	} catch (Exception $e) {
-		echo 'Excepción capturada: ',  $e->getMessage(), "\n";
-	}
-	
-});
-
-
-
