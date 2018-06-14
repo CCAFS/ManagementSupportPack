@@ -79,9 +79,11 @@ function zipFiles($files = array(), $overwrite = true) {
 			echo $zipName;
 		}else{
 			echo "No file created ->".$zipName;
+			return false;
 		}
 
 	}else{
+		echo "No valid files";
 		return false;
 	}
 }
