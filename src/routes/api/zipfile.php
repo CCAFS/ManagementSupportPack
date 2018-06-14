@@ -53,6 +53,7 @@ function zipFiles($files = array(), $overwrite = true) {
 		foreach($files as $file) {
 			//make sure the file exists
 			$file = str_replace(' ', '_', $file);
+			$file = str_replace('\\', '/', $file);
 			$file = getcwd().DIRECTORY_SEPARATOR.$file;
 			if(file_exists($file)) {
 				$valid_files[] = $file;
@@ -65,7 +66,7 @@ function zipFiles($files = array(), $overwrite = true) {
 	if(count($valid_files)) {
 		// Create the archive
 		$zip = new ZipArchive();
-		$createZip = $zip->open($zipName, ZIPARCHIVE::CREATE);
+		$createZip = $zip->open(getcwd().DIRECTORY_SEPARATOR.$zipName, ZIPARCHIVE::CREATE);
 		if($createZip !==true) {
 			return false;
 		}
@@ -79,7 +80,7 @@ function zipFiles($files = array(), $overwrite = true) {
 		}
 		$zip->close();
 
-		if(file_exists($zipName)){
+		if(file_exists(getcwd().DIRECTORY_SEPARATOR.$zipName)){
 			echo $zipName;
 		}else{
 			echo "No file created ->".$zipName;
