@@ -7,23 +7,22 @@
   <link rel="stylesheet" href="./bower_components/animate.css/animate.min.css">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
-  <link rel="stylesheet" href="./css/master.css">
+  <link rel="stylesheet" href="./css/master.css?20180614">
 </head>
 <body>
   <header></header>
 
-  <!-- Application Countdown -->
+  <!-- Application Countdown
   <div class="text-center overlayBox">
     <div class="countdownBox">
       <h3>The Management Support Pack</h3>
-      <!--
-         <p><small>Please be aware that this is a demo version, particular features may end up looking different, or may not make it into the final release</small></p>
+      <p><small>Please be aware that this is a demo version, particular features may end up looking different, or may not make it into the final release</small></p>
       <div class="countdown-styled"></div>
-      -->
     </div>
   </div>
+  -->
 
-  <div class="container">
+  <div id="block-system-main" class="container">
     <div class="loading" style="display:none"></div>
 
     <div class="form-group row">
@@ -53,7 +52,7 @@
                 <li class="type-stage id-{{ stage.id }} selectionComponent">
                   <span class="index">{{ stage.id }}</span>
                   <span class="name">{{ stage.name }}</span> <br>
-                  <span class="description"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. corporis?</span>
+                  <span class="description"> {{ stage.description }}</span>
                 </li>
                 {% endfor %}
               </ul>
@@ -70,8 +69,8 @@
             </div>
             <span class="error" style="display: none;">Please check a file.</span>
             <div style="margin-top: 2px;height: 39px;">
-              <a id="filtered-type" class="download 1 btn btn-primary">Download chosen documents</a>
-              
+              <a id="filtered-type" class="download 1 btn btn-primary">Download chosen documents <span class="glyphicon glyphicon-chevron-right"></span></a>
+
               <!-- <a class="download 5 btn btn-primary">Download full package</a>-->
             </div>
           </div>
@@ -80,12 +79,18 @@
           <div id="step3" class="col-xs-12" style="display: none">
             <h2 class="headTitle">Terms and conditions</h2>
             <div id="step3-form" class="grayBox" >
-              <h5 class="text text-justify">To continue downloading your files, please first fill in your email and then some basic information. This information will be used by CCAFS solely for impact assessment and CGIAR and Center level reporting purposes. Filling it in will greatly help us to track the use of the portal and keep improving it. This portal provides data to a very large community of users and improving its usability and efficiency is a key aspect we work on continuously. However, you may click on skip to download links directly.
+              <p>To continue downloading your files, please first fill in your email and then some basic information. This information will be used by CCAFS solely for impact assessment and CGIAR and Center level reporting purposes. Filling it in will greatly help us to track the use of the portal and keep improving it. This portal provides data to a very large community of users and improving its usability and efficiency is a key aspect we work on continuously. However, you may click on skip to download links directly.
+              </p>
               <!--  <a id="skip-form" href="#">skip</a> to download links directly. </h5>-->
-              Email: <input type="text" id="mail" name="mail" value=""/> <br>
+              <div class="form-group">
+                <label for="mail">Email:</label>
+                <input type="text" id="mail" class="form-control" name="mail" value=""/> <br>
+              </div>
               <span class="error" style="display: none;">Please enter a valid email address.</span>
-              <br><a href="" class="download 4 btn btn-primary">Go Back</a> <a class="download 2 btn btn-primary">Next</a>
-              <a class="skip 2 btn btn-info">Skip</a>
+              <br>
+              <a href="" class="download 4 btn btn-primary"> <span class="glyphicon glyphicon-chevron-left"></span> Go Back</a>
+              <a class="download 2 btn btn-primary">Next <span class="glyphicon glyphicon-chevron-right"></span> </a>
+              <a class="skip 2 btn btn-info pull-right">Skip</a>
             </div>
           </div>
           <!--end terms and conditions -->
@@ -94,20 +99,20 @@
           <div id="step4" class="col-xs-12" style="display: none">
             <h2 class="headTitle">Terms and conditions</h2>
             <div id="step4-form" class="grayBox">
-              <div id="form-group">
+              <div class="form-group">
                 <div class="form-group row">
                   <div class="col-md-6">
-                    <label for='first_name'>First name: <input type="text" id="first_name" name="first_name" value=""/></label>
+                    <label for='first_name'>First name: <input type="text" id="first_name" class="form-control" name="first_name" value=""/></label>
                   </div>
                   <div class="col-md-6">
-                    <label for='last_name'>Last name: <input type="text" id="last_name" name="last_name" value=""/></label>
+                    <label for='last_name'>Last name: <input type="text" id="last_name" class="form-control" name="last_name" value=""/></label>
                   </div>
                 </div>
                 <div class="form-group">
-                  <label for='institute-name'>Institute name: <input type="text" id="institute-name" name="institute-name" value=""/></label>
+                  <label for='institute-name'>Institute name: <input type="text" id="institute-name" class="form-control" name="institute-name" value=""/></label>
                 </div>
               </div>
-              <div id="form-group row">
+              <div class="form-group row">
                 <div class="col-md-6">
                   <h4 class="headTitle">Region(s) of your research interest: </h4>
                   {% for region in regions %}
@@ -129,12 +134,12 @@
               </div>
               <div class="form-group">
                 <label for="use">Intended use of data: </label>
-                <textarea id="use" name="use" cols="70" rows="3"></textarea>
+                <textarea id="use" class="form-control" name="use" cols="70" rows="3"></textarea>
               </div>
               <!-- Hidden inputs -->
               <input type="hidden" id="user-id" name="userId" value="">
               <span class="error" style="display: none;"></span>
-              <br><a class="download 3 btn btn-primary">Next</a>
+              <br><a class="download 3 btn btn-primary">Next <span class="glyphicon glyphicon-chevron-right"></span> </a>
             </div>
           </div>
           <!--end terms and conditions step next-->
@@ -143,8 +148,10 @@
           <div id="step5" class="col-xs-12" style="display: none">
             <h2 class="headTitle">Download</h2>
             <div id="result"></div>
-            <div id="guidelines"></div>
-            <a  class="zipfileDownload btn btn-primary">Download Zip File</a>
+            <div id="guidelines">
+              <ul></ul>
+            </div>
+            <a  class="zipfileDownload btn btn-primary"> <span class="glyphicon glyphicon-download-alt"></span> Download [<span class="nfiles">0</span>] Files</a>
             <a  href="" class="download 4 btn btn-info">New search</a>
           </div>
           <!--end download step-->
@@ -171,9 +178,12 @@
 
 <!-- Guideline template -->
 <ul style="display:none">
-  <li id="guideline-template" class="guideline inputsFlat">
-    <input class="" type="checkbox" name="check-guidelines" id="">
-    <label class="checkbox-label" for=""><span class="title"></span></label>
+  <li id="guideline-template" class="guideline">
+    <label class="inputContainer">
+      <span class="title"></span>
+      <input id="" class="" type="checkbox" name="check-guidelines" value="">
+      <span class="checkmark"></span>
+    </label>
     <span class="level pull-right"></span>
   </li>
 </ul>
@@ -181,6 +191,6 @@
 <script src="./bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
 <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
 <script src="./bower_components/countdown/dest/jquery.countdown.min.js" charset="utf-8"></script>
-<script src="./js/main.js" charset="utf-8"></script>
+<script src="./js/main.js?20180614" charset="utf-8"></script>
 </body>
 </html>

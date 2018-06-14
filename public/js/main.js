@@ -1,32 +1,13 @@
-var filterType,  listSelected,
-themePath = './vendor/',
-guideSelected = new Array(),
-filesToZip = new Array(),
-zipFileName = "";
-
+var filterType,
+filesToZip = [],
 ls = localStorage;
 
-function include(file)
-{
-
-  var script  = document.createElement('script');
-  script.src  = file;
-  script.type = 'text/javascript';
-  script.defer = true;
-
-  document.getElementsByTagName('head').item(0).appendChild(script);
-
-}
-
 $(document).ready(function() {
-
   //Attach Events
   attachEvents();
 
-  //Click Events
-  //ValidateFields();
-
   // Set countdown
+  /*
   $('.countdown-styled').countdown({
     date: "May 25, 2018 15:03:26",
     render: function(data) {
@@ -38,86 +19,88 @@ $(document).ready(function() {
       .append("<div>" + this.leadingZeros(data.sec, 2) + " <span>sec</span></div>");
     }
   });
+  */
 
-  /**********************Click Events********************************************/
+});
 
-  $("input:checkbox").click(function() {
-    if($(this).attr("name") == "check-guidelines" ) {
-      if($(this).prop('checked')){
-        addGuideSelected($(this).attr("data-idbd"));
-      } else{
-        removeGuideSelected($(this).attr("data-idbd"));
-      }
-    }
-  });
+/*********************************** Events ***********************************/
 
-  $( "a.download.1" ).click(function() {
+function attachEvents(){
+  // Select an option Event
+  $('li.selectionComponent:not(current)').on('click', selectAnOption );
+
+  $( "a.download.1" ).on('click', function() {
     filterType = $(this).attr("id");
-    if(guideSelected.length > 0){
+    if(getCheckedGuidelines().length > 0){
       $("#step3").show().siblings().hide();
     } else{
       $("#step1 .error").css("display", "block");
     }
   });
 
-    // Step 4 (Terms and conditions) form contact
-    $( "a.download.2" ).click(function() {
-      var email =$("input[name=mail]").val();
-      ls.setItem('email', email);
-      if( validateEmail(email)  ) {
-          //loadUser(email);
-          $("#step4").show().siblings().hide();
-          updateDataHeight();
-        } else {
-          $("#step3-form .error").css("display", "block");
-        }
-
-      });
-
-    // Step 5 (Links for download)
-    $( "a.download.3" ).click(function() {
-      var verifiedText = verifyFields();
-      if (verifiedText.length) {
-        $("#step4-form .error").html('Please fill out the information in the following fields :<br>'+verifiedText);
-        $("#step4-form .error").css("display", "block");
-      }else {
-        //setDownload();
-        $("#step5").show().siblings().hide();
-        printGuidelinesToDownload();
-        $('.loading').fadeOut();
+  // Step 4 (Terms and conditions) form contact
+  $( "a.download.2" ).on('click', function() {
+    var email =$("input[name=mail]").val();
+    ls.setItem('email', email);
+    if( validateEmail(email)  ) {
+        //loadUser(email);
+        $("#step4").show().siblings().hide();
+        updateDataHeight();
+      } else {
+        $("#step3-form .error").css("display", "block");
       }
-    });
+  });
 
-    //download individual files
-    $( "a.download.5" ).click(function() {
-      document.getElementsByName("check-guidelines").checked=true;
+  // Step 5 (Links for download)
+  $( "a.download.3" ).on('click', function() {
+    var verifiedText = verifyFields();
+    if (verifiedText.length) {
+      $("#step4-form .error").html('Please fill out the information in the following fields :<br>'+ verifiedText);
+      $("#step4-form .error").css("display", "block");
+    }else {
+      //setDownload();
+      $("#step5").show().siblings().hide();
       printGuidelinesToDownload();
-      console.log(window.location);
-    });
+      $('.loading').fadeOut();
+    }
+  });
 
-    //donwload zip file - step5
-    $( "a.zipfileDownload" ).on('click', function() {
-      var fileName = $(this).attr('href');
-      setTimeout(function(){ deleteZipFile(fileName); }, 3000);
-      
-    });
-     //new search - step5 to step1
-     $("a.newSearch").click(function(){
-      $("#step1").show().siblings().hide();
-    });
+  // Download individual files
+  $( "a.download.5" ).on('click', function() {
+    document.getElementsByName("check-guidelines").checked=true;
+    //printGuidelinesToDownload();
+    console.log(window.location);
+  });
 
+  // Donwload zip file - step5
+  $( "a.zipfileDownload" ).on('click', function() {
+    var fileName = $(this).attr('href');
+    setTimeout(function(){ deleteZipFile(fileName); }, 3000);
+  });
 
-   });
+  // New search - step5 to step1
+  $("a.newSearch").on('click', function(){
+    $("#step1").show().siblings().hide();
+  });
 
-/*********************************** Events ***********************************/
+  // skip-form (Links for download)
+  $("#skip-form").on("click", function(event) {
+    event.preventDefault();
+    $("#step5").show().siblings().hide();
+    //printGuidelinesToDownload();
+  });
 
-function attachEvents(){
+  $( "a.skip.2" ).on("click", function() {
+    var verifiedText = verifyFields();
+    //setDownload();
+    $("#step5").show().siblings().hide();
+    printGuidelinesToDownload();
+    $('.loading').fadeOut();
+  });
 
-  // Select an option Event
-  $('li.selectionComponent:not(current)').on('click', selectAnOption );
 }
 
-/*****************************************************************************/
+/********************************** Functions *********************************/
 
 function verifyFields(){
   var verified = '';
@@ -176,23 +159,19 @@ function validateEmail(emailField) {
   }
 }
 
-/********************************** Functions *********************************/
-
 function loadUser(email) {
   $.ajax({
     type: "POST",
     dataType: "json",
-    url: themePath+"person.php",
+    url: "./person.php",
     data: {
       context: "person",
       email: email
     },
     beforeSend: function(){
       $("#user-id").val("-1");
-
     },
     success: function(data) {
-
       data=data[0];
       if(data.email == null) {
       } else {
@@ -206,10 +185,8 @@ function loadUser(email) {
        $("#email").attr("disabled", "disabled");
        $("#email").val(data.email);
      }
-
    },
    'complete': function(data) {
-
    }
  });
 }
@@ -252,9 +229,11 @@ function selectAnOption(){
        $('.loading').fadeIn();
          // Clear data
          $('.results-query ul').empty();
+         // Clear selected files to ZIP
+         filesToZip = [];
        },
        success: function(data) {
-         var guidelines = jQuery.parseJSON( data);
+         var guidelines = jQuery.parseJSON(data);
 
          // Update result message
          $('.results-query .nDocuments').text(guidelines.length);
@@ -267,13 +246,15 @@ function selectAnOption(){
          //Add guidelines
          $.each(guidelines, function(i, guideline){
            // Create guideline from template
-           var $guideline = $('#guideline-template').clone(true);
+           var $guideline = $('#guideline-template').clone(true).removeAttr('id');
 
            // Add guideline title
            $guideline.find('.title').text(guideline.code+' '+guideline.name);
            // Add importance level and the style
            $guideline.find('.level').text(guideline.importance_level);
            $guideline.find('.level').addClass(guideline.importance_level);
+           // Add type as a class
+           $guideline.addClass("type-"+guideline.type);
            // Update inputs:checkboxes
            $guideline.find('input:checkbox').attr('id', 'input-'+i);
            $guideline.find('input:checkbox').attr('data-idbd', JSON.stringify(guideline));
@@ -289,108 +270,81 @@ function selectAnOption(){
        }
      });
   }
-
 }
 
 function showResultsBlock(blockName){
   $('.resultsBlock .results-'+blockName).slideDown().siblings().slideUp();
 }
 
-    // skip-form (Links for download)
-$("#skip-form").on("click", function(event) {
-  event.preventDefault();
+function setDownload(){
+  $.ajax({
+      type: "POST",
+      dataType: "text",
+      url: "./api/person/add",
+      data: {
+        userId: $("#user-id").val(),
+        email: $("#mail").val(),
+        firstName: $("#first_name").val(),
+        lastName: $("#last_name").val(),
+        use: $("#use").val(),
+      },
+      success: function(downloadId) {
+      },
+      complete: function(data) {
+      },
+  });
+}
 
-  $("#step5").show().siblings().hide();
-  printGuidelinesToDownload();
-
-});
-
-    $( "a.skip.2" ).click(function() {
-      var verifiedText = verifyFields();
-        //setDownload();
-        $("#step5").show().siblings().hide();
-        printGuidelinesToDownload();
-        $('.loading').fadeOut();
-      });
-
-
-    function setDownload(){
-        $.ajax({
-          type: "POST",
-          dataType: "text",
-          url: "./api/person/add",
-          data: {
-            userId: $("#user-id").val(),
-            email: $("#mail").val(),
-            firstName: $("#first_name").val(),
-            lastName: $("#last_name").val(),
-            use: $("#use").val(),
-          },
-
-          success: function(downloadId) {
-          },
-          'complete': function(data) {
-
-          },
-        });
-      }
-
-      function deleteZipFile(fileName){
-       
-        $.ajax({
-          type: "GET",   
-          url: "./api/zipfile/deleteFile",
-          data: {file: fileName},
-          success: function(data){
-      //alert(data);
+function deleteZipFile(fileName){
+  $.ajax({
+    type: "GET",
+    url: "./api/zipfile/deleteFile",
+    data: {file: fileName},
+    success: function(data){
     }
   });
-      }
+}
 
+function printGuidelinesToDownload(){
+  var content = '';
+  $( "#step5 #guidelines ul").empty();
 
-      function printGuidelinesToDownload(){
-        var content = '<ul>';
-        downloadText = ' Download',
-        className = '', downloadLink = '';
-        var guideline;
+  getCheckedGuidelines().each(function(i, guideline){
+    var data = JSON.parse($(guideline).attr("data-idbd"));
+    var className = 'guideline type-'+ data.type + ' ';
+    var downloadLink = '';
+    var isExternal = ((data.source).indexOf("http") >= 0);
+    if(isExternal){
+      className += 'external',
+      downloadLink = data.source;
+    }else{
+      className += 'local',
+      downloadLink = location.pathname + '/data/' + data.source;
+    }
+    content += "<li class='" + className + "'>";
+    if(data.source){
+      content += "<a href='" + downloadLink + "' target='_blank'>";
+    }
+    content += " "+ data.code+"  "+data.name + "";
+    if(data.source){
+      content += "</a>";
+    }
+    content += "</li>";
+    if(!isExternal && data.source){
+      filesToZip.push(downloadLink.split('//')[1]);
+    }
+  });
 
-        for (var i = 0; i<guideSelected.length; i++) {
-
-          guideline = guideSelected[i];
-
-          downloadLink = location.pathname + '/data/' + guideline.source;
-          content += "<li>";
-          content += "    <a class='downloadLink "+className+"' href='"+downloadLink+"' >" + guideline.name;
-          content += "</li>";
-
-          filesToZip.push(downloadLink.split('//')[1]);
-
-    //createGuidelineselectedList(guideSelected);
-  }
   createZipFile();
-  content += '</ul>';
-  $( "#step5 #guidelines").html(content);
+  $( "#step5 #guidelines ul").html(content);
 }
 
-/* This event is when the Checkbox was Selected or Unselected
-and fill a array guideSelected with new list selected      */
-function addGuideSelected(guide){
- guideSelected.push (JSON.parse(guide));
-
-}
-
-function removeGuideSelected(guide){
-
- for (var i = guideSelected.length; i<0 ; i++) {
-  if(guideSelected[i].equals(JSON.parse(guide))){
-    delete guideSelected[i];
-
-  }
-}
+function getCheckedGuidelines(){
+  return $('.results-query input[name="check-guidelines"]:checked');
 }
 
 function getWindowHeight(){
-  return $("#block-system-main .content").height();
+  return $("#block-system-main").height();
 }
 
 function updateDataHeight(){
@@ -399,17 +353,18 @@ function updateDataHeight(){
 }
 
 function createZipFile(){
- 
-  
-  $.ajax({
-    type: "POST",   
-    url: "./api/zipfile",
-    data: {files: filesToZip, overwrite:"true"},
-    success: function(data){
-         $('a.zipfileDownload').attr('href', "./"+data);
-    }
-  });
-
+  if(filesToZip.length > 1){
+    $.ajax({
+      type: "POST",
+      url: "./api/zipfile",
+      data: {files: filesToZip, overwrite:"true"},
+      success: function(data){
+        $('a.zipfileDownload').show().attr('href', "./"+data).find('.nfiles').text(filesToZip.length);
+      }
+    });
+  }else{
+    $('a.zipfileDownload').hide();
+  }
 }
 
 /*********************************** Utils ************************************/
