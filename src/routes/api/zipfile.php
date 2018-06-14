@@ -37,9 +37,10 @@ $app->GET("/api/zipfile/deleteFile", function(Request $request, Response $respon
 
 function zipFiles($files = array(), $overwrite = true) {
 	$date = date("Ymd").date("_His");
-	$zipName = 'export\guidelinesDocuments_'.$date.'.zip';
-
 	$folder = 'export';
+	$zipName = $folder.'/guidelinesDocuments_'.$date.'.zip';
+
+
 	if (!file_exists($folder)) {
     	mkdir($folder, 0777, true);
 	}
@@ -51,27 +52,32 @@ function zipFiles($files = array(), $overwrite = true) {
 		//cycle through each file
 		foreach($files as $file) {
 			//make sure the file exists
-			//if(file_exists($file)) {
-			$valid_files[] = $file;
-			//}
+			if(file_exists($file)) {
+				$valid_files[] = $file;
+			}
 		}
 	}
 	// If we have good files...
 	if(count($valid_files)) {
-		//create the archive
+		// Create the archive
 		$zip = new ZipArchive();
-		//if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
-		if($zip->open($zipName, ZIPARCHIVE::CREATE)!==true) {
+		$createZip = $zip->open($zipName, ZIPARCHIVE::CREATE);
+		if($createZip !==true) {
 			return false;
 		}
 
+		// Add files
 		for($i=0;$i<count($valid_files); $i++){
 			$localfile = basename($valid_files[$i]);
 			$zip->addFile("$valid_files[$i]", $localfile);
 		}
 		$zip->close();
 
-		echo $zipName;
+		if(file_exists($zipName)){
+			echo $zipName;
+		}else{
+			echo "No File";
+		}
 
 	}else{
 		return false;
