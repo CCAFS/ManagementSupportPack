@@ -69,14 +69,16 @@ function zipFiles($files = array(), $overwrite = true) {
 		// Add files
 		for($i=0;$i<count($valid_files); $i++){
 			$localfile = basename($valid_files[$i]);
-			$zip->addFile("$valid_files[$i]", $localfile);
+			if($zip->addFile("$valid_files[$i]", $localfile) !==true) {
+				echo "No file added ->".$localfile;
+			}
 		}
 		$zip->close();
 
 		if(file_exists($zipName)){
 			echo $zipName;
 		}else{
-			echo "No File";
+			echo "No file created ->".$zipName;
 		}
 
 	}else{
