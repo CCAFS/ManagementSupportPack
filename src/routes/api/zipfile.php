@@ -83,7 +83,7 @@ function zipFiles($files = array(), $overwrite = true) {
 		if(file_exists(getcwd().DIRECTORY_SEPARATOR.$zipName)){
 			echo $zipName;
 		}else{
-			echo "No file created ->".$zipName;
+			echo "No file created -> ".getcwd().DIRECTORY_SEPARATOR.$zipName;
 			return false;
 		}
 
