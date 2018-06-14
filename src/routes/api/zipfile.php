@@ -37,11 +37,11 @@ $app->GET("/api/zipfile/deleteFile", function(Request $request, Response $respon
 
 function zipFiles($files = array(), $overwrite = true) {
 	$date = date("Ymd").date("_His");
-	$zipName = 'export/guidelinesDocuments_'.$date.'.zip';
+	$zipName = 'export\guidelinesDocuments_'.$date.'.zip';
 
-	$carpeta = 'export';
-	if (!file_exists($carpeta)) {
-    	mkdir($carpeta, 0777, true);
+	$folder = 'export';
+	if (!file_exists($folder)) {
+    	mkdir($folder, 0777, true);
 	}
 
 	//vars
