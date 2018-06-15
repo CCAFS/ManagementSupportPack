@@ -68,12 +68,14 @@ function zipFiles($files = array(), $overwrite = true) {
 		$zip = new ZipArchive();
 		$createZip = $zip->open(getcwd().DIRECTORY_SEPARATOR.$zipName, ZIPARCHIVE::CREATE);
 		if($createZip !==true) {
+			echo "File not created: ".$createZip;
 			return false;
 		}
 
 		// Add files
 		for($i=0;$i<count($valid_files); $i++){
 			$localfile = basename($valid_files[$i]);
+			//echo "<p>".$valid_files[$i]. "</p>";
 			if($zip->addFile("$valid_files[$i]", $localfile) !==true) {
 				echo "No file added ->".$localfile;
 			}
@@ -83,7 +85,7 @@ function zipFiles($files = array(), $overwrite = true) {
 		if(file_exists(getcwd().DIRECTORY_SEPARATOR.$zipName)){
 			echo $zipName;
 		}else{
-			echo "No file created -> ".getcwd().DIRECTORY_SEPARATOR.$zipName;
+			echo "File not found -> ".getcwd().DIRECTORY_SEPARATOR.$zipName;
 			return false;
 		}
 
