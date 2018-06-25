@@ -25,8 +25,14 @@ $app->POST("/api/zipfile", function(Request $request, Response $response){
 });
 
 $app->GET("/api/zipfile/deleteFile", function(Request $request, Response $response){
+	$folder = 'export';
 	try {
-		unlink($_GET['file']);
+		$file = getcwd().DIRECTORY_SEPARATOR.$folder.DIRECTORY_SEPARATOR.$_GET['file'];
+		if (!unlink($file)){
+		  echo ("Error deleting $file");
+		}else{
+		  echo ("Deleted $file");
+		}
 	} catch (Exception $e) {
 		echo 'Excepción capturada: ',  $e->getMessage(), "\n";
 	}
@@ -51,9 +57,9 @@ function zipFiles($files = array(), $overwrite = true) {
 	if(is_array($files)) {
 		//cycle through each file
 		foreach($files as $file) {
-			//make sure the file exists
+			// Make sure the file exists
 			$file = str_replace(' ', '_', $file);
-			$file = str_replace('\\', '/', $file);
+			//$file = str_replace('\\', '/', $file);
 			$file = getcwd().DIRECTORY_SEPARATOR.$file;
 
 			//echo "<p>".$file."</p>";

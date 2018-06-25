@@ -51,7 +51,7 @@ function attachEvents(){
       $("#step4-form .error").html('Please fill out the information in the following fields :<br>'+ verifiedText);
       $("#step4-form .error").css("display", "block");
     }else {
-      //setDownload();
+      setDownload();
       $("#step5").show().siblings().hide();
       printGuidelinesToDownload();
       $('.loading').fadeOut();
@@ -67,7 +67,8 @@ function attachEvents(){
 
   // Donwload zip file - step5
   $( "a.zipfileDownload" ).on('click', function() {
-    var fileName = $(this).attr('href');
+    var fileName = $(this).attr('href').split('/');
+    fileName = fileName[fileName.length-1];
     setTimeout(function(){ deleteZipFile(fileName); }, 3000);
   });
 
@@ -85,7 +86,7 @@ function attachEvents(){
 
   $( "a.skip.2" ).on("click", function() {
     var verifiedText = verifyFields();
-    //setDownload();
+    setDownload();
     $("#step5").show().siblings().hide();
     printGuidelinesToDownload();
     $('.loading').fadeOut();
@@ -227,14 +228,20 @@ function selectAnOption(){
        },
        success: function(data) {
          var guidelines = jQuery.parseJSON(data);
-
+         var roleText = $('li.type-role.current .name').text();
+         var whenText = $('li.type-stage.current .name').text();
+         var whatText = $('li.type-category.current .name').text();
          // Update result message
          $('.results-query .nDocuments').text(guidelines.length);
-         $('.results-query .roleText').text($('li.type-role.current .name').text());
-         $('.results-query .stageText').text($('li.type-stage.current .name').text());
-
+         $('.results-query .roleText').text(roleText);
+         $('.results-query .stageText').text(whenText);
          // Add category header
-         $('.results-query ul').append('<li class="guidelineHead">'+$('li.type-category.current .name').text()+'</li>');
+         $('.results-query ul').append('<li class="guidelineHead">'+whatText+'</li>');
+
+         // Google Analytics custom events
+         ga('send', 'event', 'Role', 'interested', roleText);
+         ga('send', 'event', 'When', 'interested', whenText);
+         ga('send', 'event', 'What', 'interested', whatText);
 
          //Add guidelines
          $.each(guidelines, function(i, guideline){
@@ -271,6 +278,18 @@ function showResultsBlock(blockName){
 }
 
 function setDownload(){
+  console.log("setDownload");
+  $('input[name="research-regions"]:checked').each(function(i, e){
+    var regionName = $(e).next().text();
+    ga('send', 'event', 'Region of Research', 'download', regionName);
+  });
+  $('input[name="institute-regions"]:checked').each(function(i, e){
+    var regionName = $(e).next().text();
+    ga('send', 'event', 'Region Institute located', 'download', regionName);
+  });
+  ga('send', 'event', 'Users', 'download', $("#mail").val());
+  ga('send', 'event', 'Institute', 'download', $("#institute-name").val());
+  /*
   $.ajax({
       type: "POST",
       dataType: "text",
@@ -287,6 +306,7 @@ function setDownload(){
       complete: function(data) {
       },
   });
+  */
 }
 
 function deleteZipFile(fileName){
@@ -295,6 +315,7 @@ function deleteZipFile(fileName){
     url: "./api/zipfile/deleteFile",
     data: {file: fileName},
     success: function(data){
+      $('a.zipfileDownload').hide(200);
     }
   });
 }
@@ -319,7 +340,7 @@ function printGuidelinesToDownload(){
     if(data.source){
       content += "<a href='" + downloadLink + "' target='_blank'>";
     }
-    content += " "+ data.code+"  "+data.name + "";
+    content += " "+ data.code+"  "+ data.name + " ";
     if(data.source){
       content += "</a>";
     }
@@ -327,6 +348,8 @@ function printGuidelinesToDownload(){
     if(!isExternal && data.source){
       filesToZip.push(downloadLink);
     }
+    // Google Analytics custom events
+    ga('send', 'event', 'Guidelines', 'downloaded', data.name);
   });
 
   createZipFile();
@@ -349,7 +372,6 @@ function updateDataHeight(){
 
 function createZipFile(){
   if(filesToZip.length > 1){
-    console.log(filesToZip);
     $.ajax({
       type: "POST",
       url: "./api/zipfile",

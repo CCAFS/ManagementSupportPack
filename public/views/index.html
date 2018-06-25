@@ -17,26 +17,16 @@
   <link rel="stylesheet" href="./bower_components/animate.css/animate.min.css">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
-  <link rel="stylesheet" href="./css/master.css?20180625">
+  <link rel="stylesheet" href="./css/master.css?20180625_1">
 </head>
 <body>
   <header></header>
-
-  <!-- Application Countdown
-  <div class="text-center overlayBox">
-    <div class="countdownBox">
-      <h3>The Management Support Pack</h3>
-      <p><small>Please be aware that this is a demo version, particular features may end up looking different, or may not make it into the final release</small></p>
-      <div class="countdown-styled"></div>
-    </div>
-  </div>
-  -->
 
   <div id="block-system-main" class="container">
     <div class="loading" style="display:none"></div>
 
     <div class="form-group row">
-      <div class="col-xs-9 row">
+      <div class="left-bar row">
         <!-- Search Wizard -->
         <div class="searchBlock form-group row">
           <div class="col-xs-5">
@@ -75,12 +65,12 @@
           <div id="step1" class="col-xs-12">
             <h2 class="headTitle">Guidelines Recommened</h2>
             <div class="results-query">
+              <p><i>Results: <strong>Role</strong> <span class="roleText"></span>, <strong>When</strong> <span class="stageText"></span></i></p>
               <ul></ul>
             </div>
             <span class="error" style="display: none;">Please check a file.</span>
             <div style="margin-top: 2px;height: 39px;">
               <a id="filtered-type" class="download 1 btn btn-primary">Download chosen documents <span class="glyphicon glyphicon-chevron-right"></span></a>
-
               <!-- <a class="download 5 btn btn-primary">Download full package</a>-->
             </div>
           </div>
@@ -168,7 +158,7 @@
       </div>
     </div>
 
-    <div class="col-xs-3 row">
+    <div class="right-bar row">
       <h2 class="headTitle">What</h2>
       <div class="componentsBlock">
         <ul class="grayBox">
@@ -200,7 +190,6 @@
 
 <script src="./bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
 <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
-<script src="./bower_components/countdown/dest/jquery.countdown.min.js" charset="utf-8"></script>
-<script src="./js/main.js?20180625" charset="utf-8"></script>
+<script src="./js/main.js?20180625_1" charset="utf-8"></script>
 </body>
 </html>
