@@ -334,7 +334,7 @@ function printGuidelinesToDownload(){
       downloadLink = data.source;
     }else{
       className += 'local',
-      downloadLink = './data/' + (data.source).replace(/ /g,"_");;
+      downloadLink = 'data/' + (data.source).replace(/ /g,"_");;
     }
     content += "<li class='" + className + "'>";
     if(data.source){
