@@ -266,6 +266,7 @@ function selectAnOption(){
          });
        },
        complete: function(data) {
+         updateDataHeight();
          $('.loading').fadeOut();
        }
      });
@@ -319,7 +320,7 @@ function printGuidelinesToDownload(){
       downloadLink = data.source;
     }else{
       className += 'local',
-      downloadLink = location.pathname + '/data/' + data.source;
+      downloadLink = './data/' + (data.source).replace(/ /g,"_");;
     }
     content += "<li class='" + className + "'>";
     if(data.source){
@@ -331,11 +332,12 @@ function printGuidelinesToDownload(){
     }
     content += "</li>";
     if(!isExternal && data.source){
-      filesToZip.push(downloadLink.split('//')[1]);
+      filesToZip.push(downloadLink);
     }
   });
 
   createZipFile();
+  updateDataHeight();
   $( "#step5 #guidelines ul").html(content);
 }
 
@@ -354,6 +356,7 @@ function updateDataHeight(){
 
 function createZipFile(){
   if(filesToZip.length > 1){
+    console.log(filesToZip);
     $.ajax({
       type: "POST",
       url: "./api/zipfile",
