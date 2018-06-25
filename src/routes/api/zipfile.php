@@ -59,7 +59,7 @@ function zipFiles($files = array(), $overwrite = true) {
 		foreach($files as $file) {
 			// Make sure the file exists
 			$file = str_replace(' ', '_', $file);
-			//$file = str_replace('\\', '/', $file);
+			$file = str_replace('\\', '/', $file);
 			$file = getcwd().DIRECTORY_SEPARATOR.$file;
 
 			//echo "<p>".$file."</p>";
