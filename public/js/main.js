@@ -200,6 +200,7 @@ function selectAnOption(){
   // Animate icon
   $option.animateCss('flipInX');
 
+  updateDataHeight();
   // Count Options
   var nOptions = $('li.selectionComponent.current').length;
 
@@ -278,7 +279,6 @@ function showResultsBlock(blockName){
 }
 
 function setDownload(){
-  console.log("setDownload");
   $('input[name="research-regions"]:checked').each(function(i, e){
     var regionName = $(e).next().text();
     ga('send', 'event', 'Region of Research', 'download', regionName);
