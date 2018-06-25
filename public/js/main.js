@@ -2,6 +2,12 @@ var filterType,
 filesToZip = [],
 ls = localStorage;
 
+// If this document is in a subdomain of ccafs.cgiar.org change
+// the value
+if(document.domain.indexOf("ccafs.cgiar.org") != -1){
+    document.domain = 'ccafs.cgiar.org';
+}
+
 $(document).ready(function() {
   //Attach Events
   attachEvents();
