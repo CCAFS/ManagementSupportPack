@@ -200,7 +200,6 @@ function selectAnOption(){
   // Animate icon
   $option.animateCss('flipInX');
 
-  updateDataHeight();
   // Count Options
   var nOptions = $('li.selectionComponent.current').length;
 
@@ -267,8 +266,9 @@ function selectAnOption(){
          });
        },
        complete: function(data) {
-         updateDataHeight();
-         $('.loading').fadeOut();
+         $('.loading').fadeOut(function(){
+           updateDataHeight();
+         });
        }
      });
   }
@@ -353,8 +353,8 @@ function printGuidelinesToDownload(){
   });
 
   createZipFile();
-  updateDataHeight();
   $( "#step5 #guidelines ul").html(content);
+  updateDataHeight();
 }
 
 function getCheckedGuidelines(){
