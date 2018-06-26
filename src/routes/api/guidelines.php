@@ -28,7 +28,7 @@ $app->get('/api/guidelinesLevels/{role}/{stage}/{category}', function(Request $r
     INNER JOIN msp_stages s ON il.stage_id = s.id
     INNER JOIN msp_roles r ON il.role_id = r.id
     INNER JOIN msp_guidelines g ON il.guideline_id = g.id
-    WHERE il.role_id = ".$r." and il.stage_id= ".$s." and il.category_id=".$c."
+    WHERE il.role_id = ".$r." and il.stage_id= ".$s." and il.category_id=".$c." and g.active = 1 
     ORDER BY g.code";
 
     try{
@@ -47,7 +47,7 @@ $app->get('/api/guidelinesLevels/{role}/{stage}/{category}', function(Request $r
 });
 
 $app->post("/api/guidelinesLevels/download", function(Request $request, Response $response){
-  
+
     //return "{'item':'value'}";
     $params = $request->getParsedBody();
 

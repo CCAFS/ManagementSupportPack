@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="./bower_components/animate.css/animate.min.css">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
-  <link rel="stylesheet" href="./css/master.css?20180625_3">
+  <link rel="stylesheet" href="./css/master.css?20180626">
 </head>
 <body>
   <header></header>
@@ -26,7 +26,7 @@
     <div class="loading" style="display:none"></div>
 
     <div class="">
-      <div class="left-bar row">
+      <div class="left-bar">
         <!-- Search Wizard -->
         <div class="searchBlock form-group row">
           <div class="col-xs-5">
@@ -36,7 +36,7 @@
               <ul class="">
                 {% for role in roles %}
                 <li class="type-role id-{{ role.id }} selectionComponent text-center" >
-                  <img class="image" src="./images/roles/role-{{ role.id }}.png" alt="{{ role.name }}" width="100%" >
+                  <img class="image" src="./images/roles/role-{{ role.id }}.png" alt="{{ role.name }}" >
                   <div class="name">{{ role.name }}</div>
                 </li>
                 {% endfor %}
@@ -158,7 +158,7 @@
       </div>
     </div>
 
-    <div class="right-bar row">
+    <div class="right-bar">
       <h2 class="headTitle">What</h2>
       <div class="componentsBlock">
         <ul class="grayBox">
@@ -172,7 +172,7 @@
       </div>
     </div>
   </div>
-  <div class="clearfix"></div>
+
 </div>
 
 <footer></footer>
@@ -191,6 +191,6 @@
 
 <script src="./bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
 <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
-<script src="./js/main.js?20180625_3" charset="utf-8"></script>
+<script src="./js/main.js?20180626" charset="utf-8"></script>
 </body>
 </html>
