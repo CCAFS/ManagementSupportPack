@@ -182,9 +182,9 @@ function selectAnOption() {
         $('.results-query ul').append('<li class="guidelineHead">' + whatText + '</li>');
 
         // Google Analytics custom events
-        ga('send', 'event', 'Role', 'interested', roleText);
-        ga('send', 'event', 'When', 'interested', whenText);
-        ga('send', 'event', 'What', 'interested', whatText);
+        setCustomEvent('Role', 'interested', roleText);
+        setCustomEvent('When', 'interested', whenText);
+        setCustomEvent('What', 'interested', whatText);
 
         //Add guidelines
         $.each(guidelines, function(i, guideline) {
@@ -268,18 +268,18 @@ function setDownload() {
   getCheckedGuidelines().each(function(i, e) {
     var data = JSON.parse($(e).attr("data-idbd"));
     guideSelected.push(data.id);
-    ga('send', 'event', 'Guidelines', 'downloaded', data.name);
+    setCustomEvent('Guidelines', 'downloaded', data.name);
   });
   $researchRegions.each(function(i, e) {
     researchRegions.push(e.value);
-    ga('send', 'event', 'Region_of_Research', 'download', $(e).next().text());
+    setCustomEvent('Region_of_Research', 'download', $(e).next().text());
   });
   $institudeRegions.each(function(i, e) {
     instituteRegions.push(e.value);
-    ga('send', 'event', 'Region_Institute_located', 'download', $(e).next().text());
+    setCustomEvent('Region_Institute_located', 'download', $(e).next().text());
   });
-  ga('send', 'event', 'Users', 'download', $("#mail").val());
-  ga('send', 'event', 'Institute', 'download', $("#institute-name").val());
+  setCustomEvent('Users', 'download', $("#mail").val());
+  setCustomEvent('Institute', 'download', $("#institute-name").val());
 
   $.ajax({
     type: "POST",
@@ -366,6 +366,13 @@ function deleteZipFile(fileName) {
 }
 
 /*********************************** Utils ************************************/
+
+function setCustomEvent(eventName, event_category, event_label){
+  gtag('event', eventName, {
+    'event_category': event_category,
+    'event_label': event_label
+  });
+}
 
 function getClassParameter(selector, cssName) {
   var check = cssName + "-";
