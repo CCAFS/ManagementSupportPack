@@ -81,17 +81,16 @@
             <div id="step3-form" class="grayBox" >
               <p>To continue downloading your files, please first fill in your email and then some basic information. This information will be used by CCAFS solely for impact assessment and CGIAR and Center level reporting purposes. Filling it in will greatly help us to track the use of the portal and keep improving it. This portal provides data to a very large community of users and improving its usability and efficiency is a key aspect we work on continuously. However, you may click on skip to download links directly.
               </p>
-              <!--  <a id="skip-form" href="#">skip</a> to download links directly. </h5>-->
               <div class="form-group">
                 <label for="mail">Email:</label>
                 <input type="text" id="mail" class="form-control" name="mail" value=""/> <br>
+                <span class="error" style="display: none;">Please enter a valid email address.</span>
               </div>
-              <span class="error" style="display: none;">Please enter a valid email address.</span>
-              <br>
-              <a href="" class="download 4 btn btn-primary"> <span class="glyphicon glyphicon-chevron-left"></span> Go Back</a>
-              <a class="download 2 btn btn-primary">Next <span class="glyphicon glyphicon-chevron-right"></span> </a>
-              <a class="skip 2 btn btn-info pull-right">Skip</a>
             </div>
+            <br>
+            <a href="" class="download 4 btn btn-primary"> <span class="glyphicon glyphicon-chevron-left"></span> Go Back</a>
+            <a class="download 2 btn btn-primary">Next <span class="glyphicon glyphicon-chevron-right"></span> </a>
+            <a class="skip 2 btn btn-info pull-right">Skip</a>
           </div>
           <!--end terms and conditions -->
 
@@ -117,7 +116,7 @@
                   <h4 class="headTitle">Region(s) of your research interest: </h4>
                   {% for region in regions %}
                     <div class="inputsFlat">
-                      <input class="" type="checkbox" name="research-regions" id="l{{ loop.index }}" value="{{ region.value }}">
+                      <input class="" type="checkbox" name="research-regions" id="l{{ loop.index }}" value="{{ region.id }}">
                       <label class="checkbox-label" for="l{{ loop.index }}"><span class="title">{{ region.name }}</span></label>
                     </div>
                   {% endfor %}
@@ -126,7 +125,7 @@
                   <h4 class="headTitle">Region(s) where your institute is located: </h4>
                   {% for region in regions %}
                     <div class="inputsFlat">
-                      <input class="" type="checkbox" name="institute-regions" id="i{{ loop.index }}" value="{{ region.value }}">
+                      <input class="" type="checkbox" name="institute-regions" id="i{{ loop.index }}" value="{{ region.id }}">
                       <label class="checkbox-label" for="i{{ loop.index }}"><span class="title">{{ region.name }}</span></label>
                     </div>
                   {% endfor %}
@@ -137,7 +136,7 @@
                 <textarea id="use" class="form-control" name="use" cols="70" rows="3"></textarea>
               </div>
               <!-- Hidden inputs -->
-              <input type="hidden" id="user-id" name="userId" value="">
+              <input type="hidden" id="user-id" name="userId" value="1">
               <span class="error" style="display: none;"></span>
               <br><a class="download 3 btn btn-primary">Next <span class="glyphicon glyphicon-chevron-right"></span> </a>
             </div>

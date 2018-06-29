@@ -134,7 +134,7 @@ span.optionText {
 
 .results-query ul {
   padding: 0;
-  margin: 12px 0 50px 0;
+  margin: 12px 0 10px 0;
 }
 
 .results-query ul li.guidelineHead {
@@ -321,7 +321,7 @@ body {
 
 li.type-stage {
   margin: 0.6em 0;
-  padding: 16px;
+  padding: 13px;
   background-color: #1281aa;
   color: #fff;
   border-left: 36px solid #10759a;
@@ -582,4 +582,9 @@ li.guideline.type-1 {
 .right-bar {
   width: 26%;
   float: right;
+}
+
+
+#step3-form {
+  padding: 1.5em;
 }
