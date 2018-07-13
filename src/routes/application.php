@@ -86,4 +86,49 @@ $app->get('/stats', function ($request, $response, $args) {
   return $this->view->render($response, 'stats.html');
 })->setName('stats');
 
+
+/******************************* FUNCTIONS *******************************/
+
+$function = new Twig_SimpleFunction('getImportanceLevel', function ($guidelineID, $stageID, $roleID) {
+  //return "G".$guidelineID."-S".$stageID."-R".$roleID;
+  /*
+  try{
+      // Get DB Object
+      $db = new db();
+      // Connect
+      $db = $db->connect();
+
+      // Get Importance
+      $stmt = $db->query("SELECT importance_level FROM msp_importance_levels where
+          guideline_id= ".$guidelineID."
+          and stage_id = ".$stageID."
+          and role_id = ".$roleID.";");
+
+      $importanceLevel = $stmt->fetch(PDO::FETCH_OBJ);
+      //$db = null;
+
+      switch (strtolower($importanceLevel->importance_level)) {
+        case 'optional':
+          return "1";
+          break;
+        case 'useful':
+          return "2";
+          break;
+        case 'important':
+          return "3";
+          break;
+        case 'very important':
+          return "4";
+          break;
+        default:
+           return "0";
+      }
+
+  } catch(PDOException $e){
+      return "null";
+  }
+  */
+});
+$container->get('view')->getEnvironment()->addFunction($function);
+
 ?>

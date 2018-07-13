@@ -10,55 +10,120 @@
   </head>
   <body>
     <header></header>
-    <div class="container-fluid">
+    <div class="container">
       <table class="table  table-striped table-bordered">
         <thead>
           <tr>
             <th colspan="2"></th>
             {% for stage in stages %}
-              <th colspan="{{ roles|length }}" class="text-center">{{ stage.name }}</th>
+              <th colspan="{{ roles|length }}" class="text-center">
+                <small>{{ stage.name }}</small>
+              </th>
             {% endfor %}
           </tr>
           <tr>
             <th>ID</th>
-            <th>Name</th>
+            <th>Guideline</th>
             {% for stage in stages %}
-              {% for role in roles %}<th>{{ role.name }}</th>{% endfor %}
+              {% for role in roles %}<th title="{{ role.name }}" class="text-center"> <small>{{ role.acronym }}</small> </th>{% endfor %}
             {% endfor %}
           </tr>
         </thead>
         {% for guideline in guidelines %}
-            <tr>
-              <td>{{ guideline.id }}</td>
-              <td>{{ guideline.code }} {{ guideline.name }}</td>
+            <tr class="active-{{ guideline.active }}">
+              <td>{{ guideline.id }} </td>
+              <td>
+                <span class="guidelineType guidelineType-{{ guideline.type }}"></span> <small>{{ guideline.code }} {{ guideline.name }}</small>
+                <span class="pull-right">
+                  {% if guideline.source starts with 'http' %}
+                    <a href="{{guideline.source}}" target="_blank"> <span class="glyphicon glyphicon-link"></span> </a>
+                  {% else %}
+                    <a href="./data/{{guideline.source|replace(' ', '_')}}" target="_blank"> <span class="glyphicon glyphicon-download-alt"></span> </a>
+                  {% endif %}
+                </span>
+              </td>
               {% for stage in stages %}
                 {% for role in roles %}
-                  <td>
-                    <select name="" id="">
-                      <option value="">Useful</option>
-                      <option value="">Important</option>
-                      <option value="">Very Important</option>
-                    </select>
+                  <td class="text-center importanceLevel GID-{{ guideline.id }} SID-{{ stage.id }} RID-{{ role.id }}">
+
                   </td>
                 {% endfor %}
               {% endfor %}
+
             </tr>
         {% endfor %}
       </table>
+
+      <hr>
+
+      <!-- Set Guideline Level of importance
+      <h4>Add Guideline Query</h4>
+      <form action="">
+        <div class="form-group">
+          <label for="">Select Guideline:</label>
+          <select class="form-control" name="guidelineID">
+            {% for guideline in guidelines %}
+              <option value="{{ guideline.id }}">{{ guideline.code }} {{ guideline.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="">Select Category:</label>
+          <select class="form-control" name="categoryID">
+            {% for category in categories %}
+              <option value="{{ category.id }}"> {{ category.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        {% set level_index = 0 %}
+        <table class="table  table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Stage</th>
+              <th>Role</th>
+              <th>Level</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for stage in stages %}
+              {% for role in roles %}
+              <tr>
+                {% if loop.first %}
+                <td rowspan="{{ roles|length }}">
+                  {{ stage.name }}
+                  <input type="hidden" name="levels[{{level_index}}].stage" value="{{ stage.id }}">
+                </td>
+                {% endif %}
+                <td>
+                  {{ role.name }}
+                  <input type="hidden" name="levels[{{level_index}}].role" value="{{ role.id }}">
+                </td>
+                <td>
+                  <select class="form-control input-sm" name="levels[{{level_index}}].level" id="">
+                    <option>Optional</option>
+                    <option>Useful</option>
+                    <option>Important</option>
+                    <option>Very Important</option>
+                  </select>
+                </td>
+                {% set level_index = level_index + 1 %}
+              </tr>
+              {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+        <button class="btn btn-primary">Set Guideline Importance Level</button>
+      </form>
+      -->
+
     </div>
     <footer></footer>
-
-    <!-- Guideline template -->
-    <ul style="display:none">
-      <li id="guideline-template" class="guideline inputsFlat">
-        <input class="" type="checkbox" name="" id="">
-        <label class="checkbox-label" for=""><span class="title"></span></label>
-        <span class="level pull-right"></span>
-      </li>
-    </ul>
 
     <script src="./bower_components/jquery/dist/jquery.min.js" charset="utf-8"></script>
     <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js" charset="utf-8"></script>
     <script src="./js/main.js" charset="utf-8"></script>
+    <script src="./js/guidelinesView.js" charset="utf-8"></script>
   </body>
 </html>

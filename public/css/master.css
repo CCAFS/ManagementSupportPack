@@ -242,23 +242,28 @@ span.optionText {
   /* box-shadow: 1px 1px 1px rgba(0,0,0,0.1); */
 }
 
-.Very {
+.Very, .level-4 {
   background-color: #c0504d;
   color: #fff;
 }
 
-.Important {
+.Important, .level-3 {
   background-color: #da9694;
   color: #fff;
 }
 
-.Useful {
+.Useful, .level-2 {
   background-color: #e6b8b7;
   color: #fff;
 }
 
-.Optional {
-  background-color: #fff;
+.Optional, .level-1 {
+  background-color: #f7f4f4;
+  color: #222;
+}
+
+.Optional, .level-0 {
+  background-color: #000000;
   color: #222;
 }
 
@@ -584,7 +589,30 @@ li.guideline.type-1 {
   float: right;
 }
 
-
 #step3-form {
   padding: 1.5em;
+}
+
+span.guidelineType {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+
+span.guidelineType-0 {
+  background: url('../images/type-0.png') no-repeat;
+}
+
+span.guidelineType-1 {
+  background: url('../images/type-1.png') no-repeat;
+}
+
+tr.active-0 {
+  opacity: 0.35;
+}
+
+td.importanceLevel {
+  width:40px;
 }
