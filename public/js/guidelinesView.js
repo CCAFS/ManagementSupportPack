@@ -15,25 +15,29 @@ $(document).ready(function() {
       },
       success: function(data) {
         //console.log(data);
-        data =  jQuery.parseJSON( data );
-        var level =0;
-        switch((data.importance_level).toLowerCase()) {
-          case 'optional':
-            level = 1;
-            break;
-          case 'useful':
-            level = 2;
-            break;
-          case 'important':
-            level = 3;
-            break;
-          case 'very important':
-            level = 4;
-            break;
+        data =  jQuery.parseJSON(data);
+        var level = '?';
+        if (data) {
+          switch((data.importance_level).toLowerCase()) {
+            case 'optional':
+              level = '1';
+              break;
+            case 'useful':
+              level = '2';
+              break;
+            case 'important':
+              level = '3';
+              break;
+            case 'very important':
+              level = '4';
+              break;
+          }
+          $element.addClass('level-'+level);
+          $element.attr("title", data.importance_level);
+        }else{
+          $element.addClass('level-undefined');
         }
-        $element.addClass('level-'+level);
         $element.text(level);
-        $element.attr("title", data.importance_level);
       },
       complete: function(data) {
 

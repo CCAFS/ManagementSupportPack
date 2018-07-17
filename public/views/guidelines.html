@@ -34,6 +34,7 @@
               <td>{{ guideline.id }} </td>
               <td>
                 <span class="guidelineType guidelineType-{{ guideline.type }}"></span> <small>{{ guideline.code }} {{ guideline.name }}</small>
+                {% if guideline.source %}
                 <span class="pull-right">
                   {% if guideline.source starts with 'http' %}
                     <a href="{{guideline.source}}" target="_blank"> <span class="glyphicon glyphicon-link"></span> </a>
@@ -41,6 +42,7 @@
                     <a href="./data/{{guideline.source|replace(' ', '_')}}" target="_blank"> <span class="glyphicon glyphicon-download-alt"></span> </a>
                   {% endif %}
                 </span>
+                {% endif %}
               </td>
               {% for stage in stages %}
                 {% for role in roles %}

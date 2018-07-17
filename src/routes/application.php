@@ -90,7 +90,7 @@ $app->get('/stats', function ($request, $response, $args) {
 /******************************* FUNCTIONS *******************************/
 
 $function = new Twig_SimpleFunction('getImportanceLevel', function ($guidelineID, $stageID, $roleID) {
-  //return "G".$guidelineID."-S".$stageID."-R".$roleID;
+  return "G".$guidelineID."-S".$stageID."-R".$roleID;
   /*
   try{
       // Get DB Object

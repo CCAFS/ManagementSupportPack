@@ -262,10 +262,11 @@ span.optionText {
   color: #222;
 }
 
-.Optional, .level-0 {
-  background-color: #000000;
+.level-undefined {
+  background-color: #fffbd8;
   color: #222;
 }
+
 
 /* NEW CSS */
 .grayBox {
@@ -614,5 +615,5 @@ tr.active-0 {
 }
 
 td.importanceLevel {
-  width:40px;
+  width: 35px;
 }
