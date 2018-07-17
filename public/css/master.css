@@ -258,7 +258,7 @@ span.optionText {
 }
 
 .Optional, .level-1 {
-  background-color: #f7f4f4;
+  background-color: #ffffff;
   color: #222;
 }
 
@@ -612,6 +612,8 @@ span.guidelineType-1 {
 
 tr.active-0 {
   opacity: 0.35;
+}
+tr.active-0 td {
 }
 
 td.importanceLevel {
